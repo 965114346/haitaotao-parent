@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://dubbo.apache.org/schema/dubbo
+       http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!-- 提供服务的供应商名称 -->
+    <dubbo:application name="haitaotao-provider"/>
+    <!-- 使用zookeeper服务中心注册服务，需要先启动zookeeper
+        register:false 代表只订阅，不注册
+        subscribe:false 代表只注册，不订阅
+        check:false 代表注册中心不存在时，不报错
+        address:配置zookeeper的ip和端口号,集群用逗号隔开
+    -->
+    <!--  Nacos registry address  -->
+<!--    <dubbo:registry address="nacos://121.4.119.195:8848" subscribe="false" check="false"/>-->
+    <dubbo:registry address="nacos://localhost:8848" subscribe="false" check="false"/>
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    <!-- 使用注解方式暴露接口 -->
+    <dubbo:annotation package="com.haitaotao.service"/>
+
+    <!-- 组件扫描 -->
+    <context:component-scan base-package="com.haitaotao"/>
+
+    <!-- 数据源 -->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="jdbcUrl" value="${datasource.jdbcUrl}"/>
+        <property name="driverClassName" value="${datasource.driverClassName}"/>
+        <property name="username" value="${datasource.username}"/>
+        <property name="password" value="${datasource.password}"/>
+    </bean>
+
+    <!-- mybatis sessionFactory -->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mybatis/*.xml"/>
+        <property name="plugins">
+            <array>
+                <!-- 分页插件 -->
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>helperDialect=mysql</value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!-- Mapper扫描 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.haitaotao.mapper"/>
+    </bean>
+
+    <!-- Aop注解驱动 -->
+    <aop:aspectj-autoproxy/>
+
+    <!-- 数据源事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 事务注解驱动 -->
+    <tx:annotation-driven/>
+</beans>

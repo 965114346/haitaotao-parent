@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.CommentMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Comment" >
+		<id column="id" property="id" />
+		<result column="value_id" property="valueId" />
+		<result column="type" property="type" />
+		<result column="content" property="content" />
+		<result column="admin_content" property="adminContent" />
+		<result column="user_id" property="userId" />
+		<result column="has_picture" property="hasPicture" />
+		<result column="pic_urls" property="picUrls" />
+		<result column="star" property="star" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `value_id`, `type`, `content`, `admin_content`, `user_id`, `has_picture`, `pic_urls`, `star`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询评论表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_comment
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询评论表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Comment" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_comment
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="valueId != null" >
+				and `value_id` = #{valueId}
+			</if>
+			<if test="type != null" >
+				and `type` = #{type}
+			</if>
+			<if test="content != null and content != ''" >
+				and `content` = #{content}
+			</if>
+			<if test="adminContent != null and adminContent != ''" >
+				and `admin_content` = #{adminContent}
+			</if>
+			<if test="userId != null" >
+				and `user_id` = #{userId}
+			</if>
+			<if test="hasPicture != null" >
+				and `has_picture` = #{hasPicture}
+			</if>
+			<if test="picUrls != null and picUrls != ''" >
+				and `pic_urls` = #{picUrls}
+			</if>
+			<if test="star != null" >
+				and `star` = #{star}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入评论表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.Comment" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_comment
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="valueId != null" >
+                `value_id`,
+            </if>
+			<if test="type != null" >
+                `type`,
+            </if>
+			<if test="content != null" >
+                `content`,
+            </if>
+			<if test="adminContent != null" >
+                `admin_content`,
+            </if>
+			<if test="userId != null" >
+                `user_id`,
+            </if>
+			<if test="hasPicture != null" >
+                `has_picture`,
+            </if>
+			<if test="picUrls != null" >
+                `pic_urls`,
+            </if>
+			<if test="star != null" >
+                `star`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="valueId != null" >
+				#{valueId},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="content != null" >
+				#{content},
+			</if>
+			<if test="adminContent != null" >
+				#{adminContent},
+			</if>
+			<if test="userId != null" >
+				#{userId},
+			</if>
+			<if test="hasPicture != null" >
+				#{hasPicture},
+			</if>
+			<if test="picUrls != null" >
+				#{picUrls},
+			</if>
+			<if test="star != null" >
+				#{star},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新评论表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Comment" >
+		update haitaotao_comment
+		<set >
+			<if test="valueId != null" >
+				`value_id` = #{valueId},
+			</if>
+			<if test="type != null" >
+				`type` = #{type},
+			</if>
+			<if test="content != null and content != ''" >
+				`content` = #{content},
+			</if>
+			<if test="adminContent != null and adminContent != ''" >
+				`admin_content` = #{adminContent},
+			</if>
+			<if test="userId != null" >
+				`user_id` = #{userId},
+			</if>
+			<if test="hasPicture != null" >
+				`has_picture` = #{hasPicture},
+			</if>
+			<if test="picUrls != null and picUrls != ''" >
+				`pic_urls` = #{picUrls},
+			</if>
+			<if test="star != null" >
+				`star` = #{star},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除评论表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_comment where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除评论表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_comment where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

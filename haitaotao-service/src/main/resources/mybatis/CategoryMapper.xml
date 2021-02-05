@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.CategoryMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Category" >
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="keywords" property="keywords" />
+		<result column="desc" property="desc" />
+		<result column="parent_id" property="parentId" />
+		<result column="icon_url" property="iconUrl" />
+		<result column="pic_url" property="picUrl" />
+		<result column="level" property="level" />
+		<result column="sort_order" property="sortOrder" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+
+		<result column="has_children" property="hasChildren" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `name`, `keywords`, `desc`, `parent_id`, `icon_url`, `pic_url`, `level`, `sort_order`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<select id="listByParentId" resultMap="BaseResultMap">
+		SELECT
+			a.`id` as `id`,
+			a.`parent_id` as `parent_id`,
+			a.`name` as `name`,
+			a.`desc` as `desc`,
+			a.`level` as `level`,
+			a.`sort_order` as `sort_order`,
+			a.`keywords` as `keywords`,
+			a.`icon_url` as `icon_url`,
+			a.`pic_url` as `pic_url`,
+			count(b.`id`) as `has_children`
+		FROM
+			haitaotao_category as a
+			LEFT JOIN haitaotao_category as b ON b.`parent_id` = a.`id`
+			and b.`deleted` = 0
+		WHERE
+			a.`parent_id` = #{parentId}
+			and a.`deleted` = 0
+		GROUP BY
+			a.`id`
+		ORDER BY
+			a.`sort_order`, a.`update_time` desc
+	</select>
+
+	<select id="listByLevel" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from
+		haitaotao_category
+		<where>
+			`level` = #{level}
+			and `deleted` = 0
+		</where>
+		order by `sort_order`, `update_time` desc
+	</select>
+
+	<!-- 插入类目表 -->
+	<insert id="insert" parameterType="com.haitaotao.entity.Category" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_category
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="name != null" >
+				`name`,
+			</if>
+			<if test="keywords != null" >
+				`keywords`,
+			</if>
+			<if test="desc != null" >
+				`desc`,
+			</if>
+			<if test="parentId != null" >
+				`parent_id`,
+			</if>
+			<if test="iconUrl != null" >
+				`icon_url`,
+			</if>
+			<if test="picUrl != null" >
+				`pic_url`,
+			</if>
+			<if test="level != null" >
+				`level`,
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order`,
+			</if>
+			`create_time`, `update_time`,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="keywords != null" >
+				#{keywords},
+			</if>
+			<if test="desc != null" >
+				#{desc},
+			</if>
+			<if test="parentId != null" >
+				#{parentId},
+			</if>
+			<if test="iconUrl != null" >
+				#{iconUrl},
+			</if>
+			<if test="picUrl != null" >
+				#{picUrl},
+			</if>
+			<if test="level != null" >
+				#{level},
+			</if>
+			<if test="sortOrder != null" >
+				#{sortOrder},
+			</if>
+			now(), now(),
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新类目表 -->
+	<update id="updateById" parameterType="com.haitaotao.entity.Category" >
+		update haitaotao_category
+		<set >
+			<if test="name != null and name != ''" >
+				`name` = #{name},
+			</if>
+			<if test="keywords != null and keywords != ''" >
+				`keywords` = #{keywords},
+			</if>
+			<if test="desc != null and desc != ''" >
+				`desc` = #{desc},
+			</if>
+			<if test="parentId != null" >
+				`parent_id` = #{parentId},
+			</if>
+			<if test="iconUrl != null and iconUrl != ''" >
+				`icon_url` = #{iconUrl},
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				`pic_url` = #{picUrl},
+			</if>
+			<if test="level != null and level != ''" >
+				`level` = #{level},
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order` = #{sortOrder},
+			</if>
+			`update_time` = now(),
+		</set>
+		<where>
+			id = #{id} and deleted = 0
+		</where>
+	</update>
+
+	<update id="removeById">
+		update haitaotao_category
+		<set>
+			`deleted` = 1,
+			`update_time` = now(),
+		</set>
+		<where>
+			id = #{id} and deleted = 0
+		</where>
+	</update>
+</mapper>

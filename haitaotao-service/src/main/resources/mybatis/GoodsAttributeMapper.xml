@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.GoodsAttributeMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.GoodsAttribute" >
+		<id column="id" property="id" />
+		<result column="goods_id" property="goodsId" />
+		<result column="attribute" property="attribute" />
+		<result column="value" property="value" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `goods_id`, `attribute`, `value`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询商品参数表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_goods_attribute
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询商品参数表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.GoodsAttribute" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_goods_attribute
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="goodsId != null" >
+				and `goods_id` = #{goodsId}
+			</if>
+			<if test="attribute != null and attribute != ''" >
+				and `attribute` = #{attribute}
+			</if>
+			<if test="value != null and value != ''" >
+				and `value` = #{value}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入商品参数表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.GoodsAttribute" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_goods_attribute
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="goodsId != null" >
+                `goods_id`,
+            </if>
+			<if test="attribute != null" >
+                `attribute`,
+            </if>
+			<if test="value != null" >
+                `value`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="goodsId != null" >
+				#{goodsId},
+			</if>
+			<if test="attribute != null" >
+				#{attribute},
+			</if>
+			<if test="value != null" >
+				#{value},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新商品参数表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.GoodsAttribute" >
+		update haitaotao_goods_attribute
+		<set >
+			<if test="goodsId != null" >
+				`goods_id` = #{goodsId},
+			</if>
+			<if test="attribute != null and attribute != ''" >
+				`attribute` = #{attribute},
+			</if>
+			<if test="value != null and value != ''" >
+				`value` = #{value},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除商品参数表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_goods_attribute where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除商品参数表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_goods_attribute where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

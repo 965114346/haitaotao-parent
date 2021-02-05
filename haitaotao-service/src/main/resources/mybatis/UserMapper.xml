@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.UserMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.User" >
+		<id column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="gender" property="gender" />
+		<result column="birthday" property="birthday" />
+		<result column="last_login_time" property="lastLoginTime" />
+		<result column="last_login_ip" property="lastLoginIp" />
+		<result column="user_level" property="userLevel" />
+		<result column="nickname" property="nickname" />
+		<result column="mobile" property="mobile" />
+		<result column="avatar" property="avatar" />
+		<result column="weixin_openid" property="weixinOpenid" />
+		<result column="session_key" property="sessionKey" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `username`, `password`, `gender`, `birthday`, `last_login_time`, `last_login_ip`, `user_level`, `nickname`, `mobile`, `avatar`, `weixin_openid`, `session_key`, `status`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+    <select id="selectByUsername" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_user where username = #{username} and deleted = 0 limit 1
+	</select>
+
+	<select id="count" resultType="java.lang.Long">
+		select count(*) from haitaotao_user where deleted = 0
+	</select>
+
+    <select id="listByCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_user
+		<where>
+			deleted = 0
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="username != null and username != ''" >
+				and `username` = #{username}
+			</if>
+			<if test="mobile != null and mobile != ''" >
+				and `mobile` = #{mobile}
+			</if>
+		</where>
+		order by `create_time` desc
+	</select>
+
+	<select id="getUserIdLikeNickname" resultType="java.lang.Long">
+		select `id` from haitaotao_user where deleted = 0 and nickname like concat('%', #{nickname}, '%')
+	</select>
+
+	<!-- 根据PrimaryKey更新用户表 -->
+	<update id="updateById" parameterType="com.haitaotao.entity.User" >
+		update haitaotao_user
+		<set >
+			<if test="username != null and username != ''" >
+				`username` = #{username},
+			</if>
+			<if test="password != null and password != ''" >
+				`password` = #{password},
+			</if>
+			<if test="gender != null" >
+				`gender` = #{gender},
+			</if>
+			<if test="birthday != null" >
+				`birthday` = #{birthday},
+			</if>
+			<if test="lastLoginTime != null" >
+				`last_login_time` = #{lastLoginTime},
+			</if>
+			<if test="lastLoginIp != null and lastLoginIp != ''" >
+				`last_login_ip` = #{lastLoginIp},
+			</if>
+			<if test="userLevel != null" >
+				`user_level` = #{userLevel},
+			</if>
+			<if test="nickname != null and nickname != ''" >
+				`nickname` = #{nickname},
+			</if>
+			<if test="mobile != null and mobile != ''" >
+				`mobile` = #{mobile},
+			</if>
+			<if test="avatar != null and avatar != ''" >
+				`avatar` = #{avatar},
+			</if>
+			<if test="weixinOpenid != null and weixinOpenid != ''" >
+				`weixin_openid` = #{weixinOpenid},
+			</if>
+			<if test="sessionKey != null and sessionKey != ''" >
+				`session_key` = #{sessionKey},
+			</if>
+			<if test="status != null" >
+				`status` = #{status},
+			</if>
+			`update_time` = now()
+		</set>
+		<where>
+			id = #{id} and deleted = 0
+		</where>
+	</update>
+
+</mapper>

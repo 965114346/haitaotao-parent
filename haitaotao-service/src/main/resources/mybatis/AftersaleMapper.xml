@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.AftersaleMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Aftersale" >
+		<id column="id" property="id" />
+		<result column="aftersale_sn" property="aftersaleSn" />
+		<result column="order_id" property="orderId" />
+		<result column="user_id" property="userId" />
+		<result column="type" property="type" />
+		<result column="reason" property="reason" />
+		<result column="amount" property="amount" />
+		<result column="pictures" property="pictures" />
+		<result column="comment" property="comment" />
+		<result column="status" property="status" />
+		<result column="handle_time" property="handleTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `aftersale_sn`, `order_id`, `user_id`, `type`, `reason`, `amount`, `pictures`, `comment`, `status`, `handle_time`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询售后表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_aftersale
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询售后表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Aftersale" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_aftersale
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="aftersaleSn != null and aftersaleSn != ''" >
+				and `aftersale_sn` = #{aftersaleSn}
+			</if>
+			<if test="orderId != null" >
+				and `order_id` = #{orderId}
+			</if>
+			<if test="userId != null" >
+				and `user_id` = #{userId}
+			</if>
+			<if test="type != null" >
+				and `type` = #{type}
+			</if>
+			<if test="reason != null and reason != ''" >
+				and `reason` = #{reason}
+			</if>
+			<if test="amount != null" >
+				and `amount` = #{amount}
+			</if>
+			<if test="pictures != null and pictures != ''" >
+				and `pictures` = #{pictures}
+			</if>
+			<if test="comment != null and comment != ''" >
+				and `comment` = #{comment}
+			</if>
+			<if test="status != null" >
+				and `status` = #{status}
+			</if>
+			<if test="handleTime != null" >
+				and `handle_time` = #{handleTime}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入售后表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.Aftersale" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_aftersale
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="aftersaleSn != null" >
+                `aftersale_sn`,
+            </if>
+			<if test="orderId != null" >
+                `order_id`,
+            </if>
+			<if test="userId != null" >
+                `user_id`,
+            </if>
+			<if test="type != null" >
+                `type`,
+            </if>
+			<if test="reason != null" >
+                `reason`,
+            </if>
+			<if test="amount != null" >
+                `amount`,
+            </if>
+			<if test="pictures != null" >
+                `pictures`,
+            </if>
+			<if test="comment != null" >
+                `comment`,
+            </if>
+			<if test="status != null" >
+                `status`,
+            </if>
+			<if test="handleTime != null" >
+                `handle_time`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="aftersaleSn != null" >
+				#{aftersaleSn},
+			</if>
+			<if test="orderId != null" >
+				#{orderId},
+			</if>
+			<if test="userId != null" >
+				#{userId},
+			</if>
+			<if test="type != null" >
+				#{type},
+			</if>
+			<if test="reason != null" >
+				#{reason},
+			</if>
+			<if test="amount != null" >
+				#{amount},
+			</if>
+			<if test="pictures != null" >
+				#{pictures},
+			</if>
+			<if test="comment != null" >
+				#{comment},
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="handleTime != null" >
+				#{handleTime},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新售后表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Aftersale" >
+		update haitaotao_aftersale
+		<set >
+			<if test="aftersaleSn != null and aftersaleSn != ''" >
+				`aftersale_sn` = #{aftersaleSn},
+			</if>
+			<if test="orderId != null" >
+				`order_id` = #{orderId},
+			</if>
+			<if test="userId != null" >
+				`user_id` = #{userId},
+			</if>
+			<if test="type != null" >
+				`type` = #{type},
+			</if>
+			<if test="reason != null and reason != ''" >
+				`reason` = #{reason},
+			</if>
+			<if test="amount != null" >
+				`amount` = #{amount},
+			</if>
+			<if test="pictures != null and pictures != ''" >
+				`pictures` = #{pictures},
+			</if>
+			<if test="comment != null and comment != ''" >
+				`comment` = #{comment},
+			</if>
+			<if test="status != null" >
+				`status` = #{status},
+			</if>
+			<if test="handleTime != null" >
+				`handle_time` = #{handleTime},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除售后表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_aftersale where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除售后表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_aftersale where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.BrandMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Brand" >
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="desc" property="desc" />
+		<result column="pic_url" property="picUrl" />
+		<result column="sort_order" property="sortOrder" />
+		<result column="floor_price" property="floorPrice" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `name`, `desc`, `pic_url`, `sort_order`, `floor_price`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 条件查询品牌商表 -->
+    <select id="listByCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_brand
+		<where>
+			and `deleted` = 0
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="name != null and name != ''" >
+				and `name` like concat('%', #{name}, '%')
+			</if>
+		</where>
+		order by `update_time` desc, `id` desc
+	</select>
+
+	<!-- 插入品牌商表 -->
+	<insert id="insert" parameterType="com.haitaotao.entity.Brand" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_brand
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="name != null" >
+				`name`,
+			</if>
+			<if test="desc != null" >
+				`desc`,
+			</if>
+			<if test="picUrl != null" >
+				`pic_url`,
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order`,
+			</if>
+			<if test="floorPrice != null" >
+				`floor_price`,
+			</if>
+			`create_time`,`update_time`
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="desc != null" >
+				#{desc},
+			</if>
+			<if test="picUrl != null" >
+				#{picUrl},
+			</if>
+			<if test="sortOrder != null" >
+				#{sortOrder},
+			</if>
+			<if test="floorPrice != null" >
+				#{floorPrice},
+			</if>
+			now(), now()
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.haitaotao.entity.Brand">
+		update haitaotao_brand
+		<set>
+			<if test="name != null and name != ''" >
+				`name` = #{name},
+			</if>
+			<if test="desc != null and desc != ''" >
+				`desc` = #{desc},
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				`pic_url` = #{picUrl},
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order` = #{sortOrder},
+			</if>
+			<if test="floorPrice != null" >
+				`floor_price` = #{floorPrice},
+			</if>
+			`update_time` = now(),
+		</set>
+		<where>
+			id = #{id} and deleted = 0
+		</where>
+	</update>
+
+	<update id="removeById">
+		update haitaotao_brand
+		<set>
+			`deleted` = 1,
+			`update_time` = now(),
+		</set>
+		<where>
+			id = #{id} and deleted = 0
+		</where>
+	</update>
+</mapper>

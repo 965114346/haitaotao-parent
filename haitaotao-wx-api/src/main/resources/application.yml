@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: haitaotao-wx-api
+  servlet:
+    multipart:
+      enabled: false
+  profiles:
+    active: dev
+  mvc:
+    servlet:
+      load-on-startup: 1
+logging:
+  level:
+    root: info

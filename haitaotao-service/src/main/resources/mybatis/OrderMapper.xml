@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.OrderMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Order" >
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="order_no" property="orderNo" />
+		<result column="order_status" property="orderStatus" />
+		<result column="after_sale_status" property="afterSaleStatus" />
+		<result column="consignee" property="consignee" />
+		<result column="mobile" property="mobile" />
+		<result column="address" property="address" />
+		<result column="message" property="message" />
+		<result column="goods_price" property="goodsPrice" />
+		<result column="freight_price" property="freightPrice" />
+		<result column="coupon_price" property="couponPrice" />
+		<result column="integral_price" property="integralPrice" />
+		<result column="groupon_price" property="grouponPrice" />
+		<result column="order_price" property="orderPrice" />
+		<result column="actual_price" property="actualPrice" />
+		<result column="pay_id" property="payId" />
+		<result column="pay_time" property="payTime" />
+		<result column="ship_no" property="shipNo" />
+		<result column="ship_channel" property="shipChannel" />
+		<result column="ship_time" property="shipTime" />
+		<result column="refund_amount" property="refundAmount" />
+		<result column="refund_type" property="refundType" />
+		<result column="refund_content" property="refundContent" />
+		<result column="refund_time" property="refundTime" />
+		<result column="confirm_time" property="confirmTime" />
+		<result column="comments" property="comments" />
+		<result column="end_time" property="endTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `user_id`, `order_no`, `order_status`, `after_sale_status`, `consignee`, `mobile`, `address`, `message`, `goods_price`, `freight_price`, `coupon_price`, `integral_price`, `groupon_price`, `order_price`, `actual_price`, `pay_id`, `pay_time`, `ship_no`, `ship_channel`, `ship_time`, `refund_amount`, `refund_type`, `refund_content`, `refund_time`, `confirm_time`, `comments`, `end_time`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+    <select id="count" resultType="java.lang.Long">
+		select count(*) from haitaotao_order where deleted = 0
+	</select>
+
+	<select id="listByCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_order
+		<where>
+			and `deleted` = 0
+			<if test="null != userIdList and userIdList.size > 0">
+				and `user_id` in
+				<foreach item="userId" collection="userIdList" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+			</if>
+				<if test="null != orderStatusList and orderStatusList.size > 0">
+				and `order_status` in
+				<foreach item="orderStatus" collection="orderStatusList" open="(" separator="," close=")">
+					#{orderStatus}
+				</foreach>
+			</if>
+			<if test="orderNo != null and orderNo != ''" >
+				and `order_no` = #{orderNo}
+			</if>
+			<if test="consignee != null and consignee != ''" >
+				and `consignee` = #{consignee}
+			</if>
+			<if test="start != null" >
+				and `create_time` <![CDATA[ >= ]]> #{start}
+			</if>
+			<if test="end != null" >
+				and `create_time` <![CDATA[ < ]]> #{end}
+			</if>
+		</where>
+	</select>
+
+</mapper>

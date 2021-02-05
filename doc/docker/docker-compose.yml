@@ -1,0 +1,54 @@
+version: '3'
+services:
+  mysql57:
+    image: nacos/nacos-mysql:5.7
+    container_name: mysql57
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nacos_config
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos-standalone-mysql
+    environment:
+      #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
+      PREFER_HOST_MODE: hostname
+      MODE: standalone
+      #数据源平台 仅支持mysql或不保存empty
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql57
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root
+    ports:
+      - 8848:8848
+      - 9555:9555
+    depends_on:
+      - mysql57
+    restart: on-failure
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: admin123456
+    ports:
+      - 9000:9000
+    restart: on-failure
+    command: server /data
+#  prometheus:
+#    container_name: prometheus
+#    image: prom/prometheus:latest
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - nacos
+#    restart: on-failure
+#  grafana:
+#    container_name: grafana
+#    image: grafana/grafana:latest
+#    ports:
+#      - 3000:3000
+#    restart: on-failure

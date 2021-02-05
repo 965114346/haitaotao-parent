@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.TopicMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Topic" >
+		<id column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="subtitle" property="subtitle" />
+		<result column="content" property="content" />
+		<result column="price" property="price" />
+		<result column="read_count" property="readCount" />
+		<result column="pic_url" property="picUrl" />
+		<result column="sort_order" property="sortOrder" />
+		<result column="goods" property="goods" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `title`, `subtitle`, `content`, `price`, `read_count`, `pic_url`, `sort_order`, `goods`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询专题表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_topic
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询专题表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Topic" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_topic
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="title != null and title != ''" >
+				and `title` = #{title}
+			</if>
+			<if test="subtitle != null and subtitle != ''" >
+				and `subtitle` = #{subtitle}
+			</if>
+			<if test="content != null and content != ''" >
+				and `content` = #{content}
+			</if>
+			<if test="price != null" >
+				and `price` = #{price}
+			</if>
+			<if test="readCount != null and readCount != ''" >
+				and `read_count` = #{readCount}
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				and `pic_url` = #{picUrl}
+			</if>
+			<if test="sortOrder != null" >
+				and `sort_order` = #{sortOrder}
+			</if>
+			<if test="goods != null and goods != ''" >
+				and `goods` = #{goods}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入专题表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.Topic" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_topic
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="title != null" >
+                `title`,
+            </if>
+			<if test="subtitle != null" >
+                `subtitle`,
+            </if>
+			<if test="content != null" >
+                `content`,
+            </if>
+			<if test="price != null" >
+                `price`,
+            </if>
+			<if test="readCount != null" >
+                `read_count`,
+            </if>
+			<if test="picUrl != null" >
+                `pic_url`,
+            </if>
+			<if test="sortOrder != null" >
+                `sort_order`,
+            </if>
+			<if test="goods != null" >
+                `goods`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="title != null" >
+				#{title},
+			</if>
+			<if test="subtitle != null" >
+				#{subtitle},
+			</if>
+			<if test="content != null" >
+				#{content},
+			</if>
+			<if test="price != null" >
+				#{price},
+			</if>
+			<if test="readCount != null" >
+				#{readCount},
+			</if>
+			<if test="picUrl != null" >
+				#{picUrl},
+			</if>
+			<if test="sortOrder != null" >
+				#{sortOrder},
+			</if>
+			<if test="goods != null" >
+				#{goods},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新专题表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Topic" >
+		update haitaotao_topic
+		<set >
+			<if test="title != null and title != ''" >
+				`title` = #{title},
+			</if>
+			<if test="subtitle != null and subtitle != ''" >
+				`subtitle` = #{subtitle},
+			</if>
+			<if test="content != null and content != ''" >
+				`content` = #{content},
+			</if>
+			<if test="price != null" >
+				`price` = #{price},
+			</if>
+			<if test="readCount != null and readCount != ''" >
+				`read_count` = #{readCount},
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				`pic_url` = #{picUrl},
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order` = #{sortOrder},
+			</if>
+			<if test="goods != null and goods != ''" >
+				`goods` = #{goods},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除专题表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_topic where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除专题表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_topic where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

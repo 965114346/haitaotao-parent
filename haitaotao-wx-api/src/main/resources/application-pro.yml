@@ -1,0 +1,12 @@
+server:
+  port: 8082
+logging:
+  level:
+    com.haitaotao: debug
+
+dubbo:
+  application:
+    name: haitaotao-wx-api
+    qos-enable: false
+  registry:
+    address: nacos://121.4.119.195:8848

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: haitaotao-admin-api
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+  profiles:
+    active: dev
+  mvc:
+    servlet:
+      load-on-startup: 1
+    date-format: yyyy-MM-dd HH:mm:ss
+logging:
+  level:
+    root: info

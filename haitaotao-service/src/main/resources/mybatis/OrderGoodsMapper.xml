@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.OrderGoodsMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.OrderGoods" >
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="goods_id" property="goodsId" />
+		<result column="goods_name" property="goodsName" />
+		<result column="goods_sn" property="goodsSn" />
+		<result column="product_id" property="productId" />
+		<result column="number" property="number" />
+		<result column="price" property="price" />
+		<result column="specifications" property="specifications" />
+		<result column="pic_url" property="picUrl" />
+		<result column="comment" property="comment" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `order_id`, `goods_id`, `goods_name`, `goods_sn`, `product_id`, `number`, `price`, `specifications`, `pic_url`, `comment`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询订单商品表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_order_goods
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询订单商品表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.OrderGoods" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_order_goods
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="orderId != null" >
+				and `order_id` = #{orderId}
+			</if>
+			<if test="goodsId != null" >
+				and `goods_id` = #{goodsId}
+			</if>
+			<if test="goodsName != null and goodsName != ''" >
+				and `goods_name` = #{goodsName}
+			</if>
+			<if test="goodsSn != null and goodsSn != ''" >
+				and `goods_sn` = #{goodsSn}
+			</if>
+			<if test="productId != null" >
+				and `product_id` = #{productId}
+			</if>
+			<if test="number != null" >
+				and `number` = #{number}
+			</if>
+			<if test="price != null" >
+				and `price` = #{price}
+			</if>
+			<if test="specifications != null and specifications != ''" >
+				and `specifications` = #{specifications}
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				and `pic_url` = #{picUrl}
+			</if>
+			<if test="comment != null" >
+				and `comment` = #{comment}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+	<!-- 插入订单商品表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.OrderGoods" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_order_goods
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="orderId != null" >
+                `order_id`,
+            </if>
+			<if test="goodsId != null" >
+                `goods_id`,
+            </if>
+			<if test="goodsName != null" >
+                `goods_name`,
+            </if>
+			<if test="goodsSn != null" >
+                `goods_sn`,
+            </if>
+			<if test="productId != null" >
+                `product_id`,
+            </if>
+			<if test="number != null" >
+                `number`,
+            </if>
+			<if test="price != null" >
+                `price`,
+            </if>
+			<if test="specifications != null" >
+                `specifications`,
+            </if>
+			<if test="picUrl != null" >
+                `pic_url`,
+            </if>
+			<if test="comment != null" >
+                `comment`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="orderId != null" >
+				#{orderId},
+			</if>
+			<if test="goodsId != null" >
+				#{goodsId},
+			</if>
+			<if test="goodsName != null" >
+				#{goodsName},
+			</if>
+			<if test="goodsSn != null" >
+				#{goodsSn},
+			</if>
+			<if test="productId != null" >
+				#{productId},
+			</if>
+			<if test="number != null" >
+				#{number},
+			</if>
+			<if test="price != null" >
+				#{price},
+			</if>
+			<if test="specifications != null" >
+				#{specifications},
+			</if>
+			<if test="picUrl != null" >
+				#{picUrl},
+			</if>
+			<if test="comment != null" >
+				#{comment},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新订单商品表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.OrderGoods" >
+		update haitaotao_order_goods
+		<set >
+			<if test="orderId != null" >
+				`order_id` = #{orderId},
+			</if>
+			<if test="goodsId != null" >
+				`goods_id` = #{goodsId},
+			</if>
+			<if test="goodsName != null and goodsName != ''" >
+				`goods_name` = #{goodsName},
+			</if>
+			<if test="goodsSn != null and goodsSn != ''" >
+				`goods_sn` = #{goodsSn},
+			</if>
+			<if test="productId != null" >
+				`product_id` = #{productId},
+			</if>
+			<if test="number != null" >
+				`number` = #{number},
+			</if>
+			<if test="price != null" >
+				`price` = #{price},
+			</if>
+			<if test="specifications != null and specifications != ''" >
+				`specifications` = #{specifications},
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				`pic_url` = #{picUrl},
+			</if>
+			<if test="comment != null" >
+				`comment` = #{comment},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除订单商品表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_order_goods where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除订单商品表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_order_goods where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

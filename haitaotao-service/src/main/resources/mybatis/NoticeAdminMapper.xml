@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.NoticeAdminMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.NoticeAdmin" >
+		<id column="id" property="id" />
+		<result column="notice_id" property="noticeId" />
+		<result column="notice_title" property="noticeTitle" />
+		<result column="admin_id" property="adminId" />
+		<result column="read_time" property="readTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `notice_id`, `notice_title`, `admin_id`, `read_time`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<select id="countUnread" resultType="java.lang.Integer">
+		select count(*) from haitaotao_notice_admin where read_time is null and deleted = 0
+	</select>
+
+
+</mapper>

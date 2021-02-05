@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.GoodsMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Goods" >
+		<id column="id" property="id" />
+		<result column="goods_sn" property="goodsSn" />
+		<result column="name" property="name" />
+		<result column="category_id" property="categoryId" />
+		<result column="brand_id" property="brandId" />
+		<result column="gallery" property="gallery" />
+		<result column="keywords" property="keywords" />
+		<result column="brief" property="brief" />
+		<result column="is_on_sale" property="isOnSale" />
+		<result column="sort_order" property="sortOrder" />
+		<result column="pic_url" property="picUrl" />
+		<result column="share_url" property="shareUrl" />
+		<result column="is_new" property="isNew" />
+		<result column="is_hot" property="isHot" />
+		<result column="unit" property="unit" />
+		<result column="counter_price" property="counterPrice" />
+		<result column="retail_price" property="retailPrice" />
+		<result column="detail" property="detail" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `goods_sn`, `name`, `category_id`, `brand_id`, `gallery`, `keywords`, `brief`, `is_on_sale`, `sort_order`, `pic_url`, `share_url`, `is_new`, `is_hot`, `unit`, `counter_price`, `retail_price`, `detail`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<!-- 根据PrimaryKey查询商品基本信息表 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_goods
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- 条件查询商品基本信息表 -->
+	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Goods" >
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_goods
+		<where>
+			<if test="id != null" >
+				and `id` = #{id}
+			</if>
+			<if test="goodsSn != null and goodsSn != ''" >
+				and `goods_sn` = #{goodsSn}
+			</if>
+			<if test="name != null and name != ''" >
+				and `name` = #{name}
+			</if>
+			<if test="categoryId != null" >
+				and `category_id` = #{categoryId}
+			</if>
+			<if test="brandId != null" >
+				and `brand_id` = #{brandId}
+			</if>
+			<if test="gallery != null and gallery != ''" >
+				and `gallery` = #{gallery}
+			</if>
+			<if test="keywords != null and keywords != ''" >
+				and `keywords` = #{keywords}
+			</if>
+			<if test="brief != null and brief != ''" >
+				and `brief` = #{brief}
+			</if>
+			<if test="isOnSale != null" >
+				and `is_on_sale` = #{isOnSale}
+			</if>
+			<if test="sortOrder != null" >
+				and `sort_order` = #{sortOrder}
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				and `pic_url` = #{picUrl}
+			</if>
+			<if test="shareUrl != null and shareUrl != ''" >
+				and `share_url` = #{shareUrl}
+			</if>
+			<if test="isNew != null" >
+				and `is_new` = #{isNew}
+			</if>
+			<if test="isHot != null" >
+				and `is_hot` = #{isHot}
+			</if>
+			<if test="unit != null and unit != ''" >
+				and `unit` = #{unit}
+			</if>
+			<if test="counterPrice != null" >
+				and `counter_price` = #{counterPrice}
+			</if>
+			<if test="retailPrice != null" >
+				and `retail_price` = #{retailPrice}
+			</if>
+			<if test="detail != null and detail != ''" >
+				and `detail` = #{detail}
+			</if>
+			<if test="createTime != null" >
+				and `create_time` = #{createTime}
+			</if>
+			<if test="updateTime != null" >
+				and `update_time` = #{updateTime}
+			</if>
+			<if test="deleted != null" >
+				and `deleted` = #{deleted}
+			</if>
+		</where>
+	</select>
+
+    <select id="count" resultType="java.lang.Long">
+		select count(*) from haitaotao_goods where deleted = 0
+	</select>
+
+    <!-- 插入商品基本信息表 -->
+	<insert id="insertSelective" parameterType="com.haitaotao.entity.Goods" >
+		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into haitaotao_goods
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="goodsSn != null" >
+                `goods_sn`,
+            </if>
+			<if test="name != null" >
+                `name`,
+            </if>
+			<if test="categoryId != null" >
+                `category_id`,
+            </if>
+			<if test="brandId != null" >
+                `brand_id`,
+            </if>
+			<if test="gallery != null" >
+                `gallery`,
+            </if>
+			<if test="keywords != null" >
+                `keywords`,
+            </if>
+			<if test="brief != null" >
+                `brief`,
+            </if>
+			<if test="isOnSale != null" >
+                `is_on_sale`,
+            </if>
+			<if test="sortOrder != null" >
+                `sort_order`,
+            </if>
+			<if test="picUrl != null" >
+                `pic_url`,
+            </if>
+			<if test="shareUrl != null" >
+                `share_url`,
+            </if>
+			<if test="isNew != null" >
+                `is_new`,
+            </if>
+			<if test="isHot != null" >
+                `is_hot`,
+            </if>
+			<if test="unit != null" >
+                `unit`,
+            </if>
+			<if test="counterPrice != null" >
+                `counter_price`,
+            </if>
+			<if test="retailPrice != null" >
+                `retail_price`,
+            </if>
+			<if test="detail != null" >
+                `detail`,
+            </if>
+			<if test="createTime != null" >
+                `create_time`,
+            </if>
+			<if test="updateTime != null" >
+                `update_time`,
+            </if>
+			<if test="deleted != null" >
+                `deleted`,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="goodsSn != null" >
+				#{goodsSn},
+			</if>
+			<if test="name != null" >
+				#{name},
+			</if>
+			<if test="categoryId != null" >
+				#{categoryId},
+			</if>
+			<if test="brandId != null" >
+				#{brandId},
+			</if>
+			<if test="gallery != null" >
+				#{gallery},
+			</if>
+			<if test="keywords != null" >
+				#{keywords},
+			</if>
+			<if test="brief != null" >
+				#{brief},
+			</if>
+			<if test="isOnSale != null" >
+				#{isOnSale},
+			</if>
+			<if test="sortOrder != null" >
+				#{sortOrder},
+			</if>
+			<if test="picUrl != null" >
+				#{picUrl},
+			</if>
+			<if test="shareUrl != null" >
+				#{shareUrl},
+			</if>
+			<if test="isNew != null" >
+				#{isNew},
+			</if>
+			<if test="isHot != null" >
+				#{isHot},
+			</if>
+			<if test="unit != null" >
+				#{unit},
+			</if>
+			<if test="counterPrice != null" >
+				#{counterPrice},
+			</if>
+			<if test="retailPrice != null" >
+				#{retailPrice},
+			</if>
+			<if test="detail != null" >
+				#{detail},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="deleted != null" >
+				#{deleted},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 根据PrimaryKey更新商品基本信息表 -->
+	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Goods" >
+		update haitaotao_goods
+		<set >
+			<if test="goodsSn != null and goodsSn != ''" >
+				`goods_sn` = #{goodsSn},
+			</if>
+			<if test="name != null and name != ''" >
+				`name` = #{name},
+			</if>
+			<if test="categoryId != null" >
+				`category_id` = #{categoryId},
+			</if>
+			<if test="brandId != null" >
+				`brand_id` = #{brandId},
+			</if>
+			<if test="gallery != null and gallery != ''" >
+				`gallery` = #{gallery},
+			</if>
+			<if test="keywords != null and keywords != ''" >
+				`keywords` = #{keywords},
+			</if>
+			<if test="brief != null and brief != ''" >
+				`brief` = #{brief},
+			</if>
+			<if test="isOnSale != null" >
+				`is_on_sale` = #{isOnSale},
+			</if>
+			<if test="sortOrder != null" >
+				`sort_order` = #{sortOrder},
+			</if>
+			<if test="picUrl != null and picUrl != ''" >
+				`pic_url` = #{picUrl},
+			</if>
+			<if test="shareUrl != null and shareUrl != ''" >
+				`share_url` = #{shareUrl},
+			</if>
+			<if test="isNew != null" >
+				`is_new` = #{isNew},
+			</if>
+			<if test="isHot != null" >
+				`is_hot` = #{isHot},
+			</if>
+			<if test="unit != null and unit != ''" >
+				`unit` = #{unit},
+			</if>
+			<if test="counterPrice != null" >
+				`counter_price` = #{counterPrice},
+			</if>
+			<if test="retailPrice != null" >
+				`retail_price` = #{retailPrice},
+			</if>
+			<if test="detail != null and detail != ''" >
+				`detail` = #{detail},
+			</if>
+			<if test="createTime != null" >
+				`create_time` = #{createTime},
+			</if>
+			<if test="updateTime != null" >
+				`update_time` = #{updateTime},
+			</if>
+			<if test="deleted != null" >
+				`deleted` = #{deleted},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- 根据PrimaryKey删除商品基本信息表 -->
+	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from haitaotao_goods where id = #{id}
+	</update>
+
+	<!-- 根据PrimaryKey批量删除商品基本信息表 -->
+	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
+        <if test="null != list and list.size > 0">
+            delete from haitaotao_goods where id in
+            <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+        </if>
+	</update>
+
+</mapper>

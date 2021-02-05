@@ -1,0 +1,20 @@
+server:
+  port: 8083
+logging:
+  level:
+    com.haitaotao: debug
+
+dubbo:
+  application:
+    name: haitaotao-admin-api
+    qos-enable: false
+  registry:
+    address: nacos://localhost:8848
+  consumer:
+    check: false
+
+minio:
+  bucketName: haitaotao
+  accessKey: admin
+  secretKey: admin123456
+  endpoint: http://localhost:9000
