@@ -24,14 +24,9 @@ public class OrderGoods implements Serializable {
     private Long id;
 
     /**
-     * 订单表的订单ID
+     * 订单编号
      */
-    private Long orderId;
-
-    /**
-     * 商品表的商品ID
-     */
-    private Long goodsId;
+    private Long orderNo;
 
     /**
      * 商品名称
@@ -41,7 +36,7 @@ public class OrderGoods implements Serializable {
     /**
      * 商品编号
      */
-    private String goodsSn;
+    private String goodsNo;
 
     /**
      * 商品货品表的货品ID
@@ -61,7 +56,7 @@ public class OrderGoods implements Serializable {
     /**
      * 商品货品的规格列表
      */
-    private String specifications;
+    private String[] specifications;
 
     /**
      * 商品货品图片或者商品图片

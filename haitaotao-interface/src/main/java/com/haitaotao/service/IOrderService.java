@@ -33,4 +33,11 @@ public interface IOrderService {
      * @return 订单列表
      */
     PageInfo<Order> pageList(Integer pageNum, Integer pageSize, String nickname, List<Integer> orderStatusList, String consignee, String orderNo, Date start, Date end);
+
+    /**
+     * 获取订单详情
+     * @param orderNo 订单编号
+     * @return 订单信息
+     */
+    Order getByOrderNo(String orderNo);
 }

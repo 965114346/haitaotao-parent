@@ -59,6 +59,16 @@
 		select `id` from haitaotao_user where deleted = 0 and nickname like concat('%', #{nickname}, '%')
 	</select>
 
+	<select id="getByUserId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from
+		haitaotao_user
+		<where>
+			`id` = #{userId}
+		</where>
+	</select>
+
 	<!-- 根据PrimaryKey更新用户表 -->
 	<update id="updateById" parameterType="com.haitaotao.entity.User" >
 		update haitaotao_user

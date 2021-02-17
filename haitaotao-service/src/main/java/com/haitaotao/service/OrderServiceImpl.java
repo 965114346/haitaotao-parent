@@ -3,7 +3,11 @@ package com.haitaotao.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import com.haitaotao.entity.OrderGoods;
+import com.haitaotao.entity.User;
+import com.haitaotao.mapper.OrderGoodsMapper;
 import com.haitaotao.mapper.UserMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +36,9 @@ public class OrderServiceImpl implements IOrderService {
     private OrderMapper orderMapper;
 
     @Autowired
+    private OrderGoodsMapper orderGoodsMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Override
@@ -51,6 +58,23 @@ public class OrderServiceImpl implements IOrderService {
 
         PageHelper.startPage(pageNum, pageSize);
         List<Order> list = orderMapper.listByCondition(userIdList, orderStatusList, consignee, orderNo, start, end);
+
+        for (Order order : list) {
+            // 订单用户信息
+            User user = userMapper.getByUserId(order.getUserId());
+            if (Objects.nonNull(user)) {
+                order.setNickname(user.getNickname()).setAvatar(user.getAvatar());
+            }
+
+            // 订单商品信息
+            List<OrderGoods> goodsList = orderGoodsMapper.listGoodsByOrderNo(order.getOrderNo());
+            order.setOrderGoodsList(goodsList);
+        }
         return PageInfo.of(list);
+    }
+
+    @Override
+    public Order getByOrderNo(String orderNo) {
+        return null;
     }
 }

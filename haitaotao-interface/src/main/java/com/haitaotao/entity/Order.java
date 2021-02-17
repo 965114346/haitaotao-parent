@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单表
@@ -191,4 +192,9 @@ public class Order implements Serializable {
      * 用户头像
      */
     private String avatar;
+
+    /**
+     * 商品列表
+     */
+    private List<OrderGoods> orderGoodsList;
 }

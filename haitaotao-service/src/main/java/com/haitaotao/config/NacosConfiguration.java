@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2021/1/8 13:50
  */
 @Configuration
-@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "localhost:8848", namespace = "4d175029-a897-43a0-a204-3014c515ebd2"))
+@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "localhost:8848", namespace = "d2a747a2-f377-4ff4-b8d1-2fc0eb6190b4"))
 @NacosPropertySource(dataId = "haitaotao_db.properties", autoRefreshed = false)
 public class NacosConfiguration {
 

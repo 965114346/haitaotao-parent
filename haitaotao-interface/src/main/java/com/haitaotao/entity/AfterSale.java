@@ -16,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class Aftersale implements Serializable {
+public class AfterSale implements Serializable {
 
     /**
      * 
@@ -26,12 +26,12 @@ public class Aftersale implements Serializable {
     /**
      * 售后编号
      */
-    private String aftersaleSn;
+    private String afterSaleNo;
 
     /**
      * 订单ID
      */
-    private Long orderId;
+    private String orderNo;
 
     /**
      * 用户ID

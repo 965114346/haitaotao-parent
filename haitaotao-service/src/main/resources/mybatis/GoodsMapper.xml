@@ -4,7 +4,7 @@
 
 	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Goods" >
 		<id column="id" property="id" />
-		<result column="goods_sn" property="goodsSn" />
+		<result column="goods_no" property="goodsNo" />
 		<result column="name" property="name" />
 		<result column="category_id" property="categoryId" />
 		<result column="brand_id" property="brandId" />
@@ -27,7 +27,7 @@
 	</resultMap>
 
 	<sql id="Base_Column_List" >
-		`id`, `goods_sn`, `name`, `category_id`, `brand_id`, `gallery`, `keywords`, `brief`, `is_on_sale`, `sort_order`, `pic_url`, `share_url`, `is_new`, `is_hot`, `unit`, `counter_price`, `retail_price`, `detail`, `create_time`, `update_time`, `deleted`
+		`id`, `goods_no`, `name`, `category_id`, `brand_id`, `gallery`, `keywords`, `brief`, `is_on_sale`, `sort_order`, `pic_url`, `share_url`, `is_new`, `is_hot`, `unit`, `counter_price`, `retail_price`, `detail`, `create_time`, `update_time`, `deleted`
 	</sql>
 
 	<!-- 根据PrimaryKey查询商品基本信息表 -->
@@ -49,8 +49,8 @@
 			<if test="id != null" >
 				and `id` = #{id}
 			</if>
-			<if test="goodsSn != null and goodsSn != ''" >
-				and `goods_sn` = #{goodsSn}
+			<if test="goodsNo != null and goodsNo != ''" >
+				and `goods_no` = #{goodsNo}
 			</if>
 			<if test="name != null and name != ''" >
 				and `name` = #{name}
@@ -123,8 +123,8 @@
 		</selectKey>
 		insert into haitaotao_goods
 		<trim prefix="(" suffix=")" suffixOverrides="," >
-			<if test="goodsSn != null" >
-                `goods_sn`,
+			<if test="goodsNo != null" >
+                `goods_no`,
             </if>
 			<if test="name != null" >
                 `name`,
@@ -185,8 +185,8 @@
             </if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
-			<if test="goodsSn != null" >
-				#{goodsSn},
+			<if test="goodsNo != null" >
+				#{goodsNo},
 			</if>
 			<if test="name != null" >
 				#{name},
@@ -252,8 +252,8 @@
 	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Goods" >
 		update haitaotao_goods
 		<set >
-			<if test="goodsSn != null and goodsSn != ''" >
-				`goods_sn` = #{goodsSn},
+			<if test="goodsNo != null and goodsNo != ''" >
+				`goods_no` = #{goodsNo},
 			</if>
 			<if test="name != null and name != ''" >
 				`name` = #{name},

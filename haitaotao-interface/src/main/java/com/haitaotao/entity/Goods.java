@@ -26,7 +26,7 @@ public class Goods implements Serializable {
     /**
      * 商品编号
      */
-    private String goodsSn;
+    private String goodsNo;
 
     /**
      * 商品名称

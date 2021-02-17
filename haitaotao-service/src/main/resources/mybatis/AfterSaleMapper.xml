@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.AfterSaleMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.AfterSale" >
+		<id column="id" property="id" />
+		<result column="after_sale_no" property="afterSaleNo" />
+		<result column="order_no" property="orderNo" />
+		<result column="user_id" property="userId" />
+		<result column="type" property="type" />
+		<result column="reason" property="reason" />
+		<result column="amount" property="amount" />
+		<result column="pictures" property="pictures" />
+		<result column="comment" property="comment" />
+		<result column="status" property="status" />
+		<result column="handle_time" property="handleTime" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="deleted" property="deleted" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `after_sale_no`, `order_no`, `user_id`, `type`, `reason`, `amount`, `pictures`, `comment`, `status`, `handle_time`, `create_time`, `update_time`, `deleted`
+	</sql>
+
+	<select id="listByCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_after_sale
+		<where>
+			and `deleted` = 0
+			<if test="afterSaleNo != null and afterSaleNo != ''" >
+				and `after_sale_no` = #{afterSaleNo}
+			</if>
+			<if test="orderNo != null and orderNo != ''" >
+				and `order_no` = #{orderNo}
+			</if>
+			<if test="status != null" >
+				and `status` = #{status}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateStatusByNo">
+
+	</update>
+</mapper>

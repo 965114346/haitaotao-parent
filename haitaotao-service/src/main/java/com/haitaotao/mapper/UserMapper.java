@@ -50,4 +50,11 @@ public interface UserMapper {
      * @return 用户id列表
      */
     List<Long> getUserIdLikeNickname(String nickname);
+
+    /**
+     * 根据用户id获取用户信息
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    User getByUserId(Long userId);
 }
