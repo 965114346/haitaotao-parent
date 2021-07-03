@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.ConfigOrderMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.ConfigOrder" >
+		<id column="id" property="id" />
+		<result column="auto_cancel" property="autoCancel" />
+		<result column="auto_confirm" property="autoConfirm" />
+		<result column="expire_comment" property="expireComment" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `auto_cancel`, `auto_confirm`, `expire_comment`, `create_time`, `update_time`
+	</sql>
+
+    <select id="get" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_config_order
+		limit 1
+	</select>
+
+	<update id="updateById" parameterType="com.haitaotao.entity.ConfigOrder">
+		update haitaotao_config_order
+		<set >
+			<if test="autoCancel != null" >
+				`auto_cancel` = #{autoCancel},
+			</if>
+			<if test="autoConfirm != null" >
+				`auto_confirm` = #{autoConfirm},
+			</if>
+			<if test="expireComment != null" >
+				`expire_comment` = #{expireComment},
+			</if>
+			`update_time` = now(),
+		</set>
+		<where>
+			`id` = #{id}
+		</where>
+	</update>
+</mapper>

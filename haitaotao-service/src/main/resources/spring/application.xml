@@ -16,6 +16,9 @@
        http://dubbo.apache.org/schema/dubbo
        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
+    <!-- 配置文件 -->
+    <context:property-placeholder location="classpath:properties/*.properties"/>
+
     <!-- 提供服务的供应商名称 -->
     <dubbo:application name="haitaotao-provider"/>
     <!-- 使用zookeeper服务中心注册服务，需要先启动zookeeper
@@ -34,6 +37,31 @@
 
     <!-- 组件扫描 -->
     <context:component-scan base-package="com.haitaotao"/>
+
+    <!-- redis单机 -->
+    <bean class="redis.clients.jedis.JedisPool" destroy-method="close">
+        <constructor-arg name="host" value="${redis.host}"/>
+        <constructor-arg name="port" value="${redis.port}"/>
+    </bean>
+    <!-- redis集群 -->
+    <!--    <bean class="redis.clients.jedis.JedisCluster">-->
+    <!--        <constructor-arg>-->
+    <!--            <set>-->
+    <!--                <bean class="redis.clients.jedis.HostAndPort">-->
+    <!--                    <constructor-arg name="host" value="192.168.25.153"/>-->
+    <!--                    <constructor-arg name="port" value="7001"/>-->
+    <!--                </bean>-->
+    <!--                <bean class="redis.clients.jedis.HostAndPort">-->
+    <!--                    <constructor-arg name="host" value="192.168.25.153"/>-->
+    <!--                    <constructor-arg name="port" value="7002"/>-->
+    <!--                </bean>-->
+    <!--                <bean class="redis.clients.jedis.HostAndPort">-->
+    <!--                    <constructor-arg name="host" value="192.168.25.153"/>-->
+    <!--                    <constructor-arg name="port" value="7003"/>-->
+    <!--                </bean>-->
+    <!--            </set>-->
+    <!--        </constructor-arg>-->
+    <!--    </bean>-->
 
     <!-- 数据源 -->
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

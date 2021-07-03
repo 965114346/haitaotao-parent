@@ -28,7 +28,7 @@ public interface OrderMapper {
      * @param orderNo 订单编号
      * @param start 开始时间
      * @param end 结束时间
-     * @return 订单列表
+     * @return {@link Order}订单列表
      */
     List<Order> listByCondition(@Param("userIdList") List<Long> userIdList,
                                 @Param("orderStatusList") List<Integer> orderStatusList,
@@ -36,4 +36,22 @@ public interface OrderMapper {
                                 @Param("orderNo") String orderNo,
                                 @Param("start") Date start,
                                 @Param("end") Date end);
+
+    /**
+     * 根据订单编号获取订单信息
+     * @param orderNo 订单编号
+     * @return {@link Order}订单信息
+     */
+    Order getByOrderNo(String orderNo);
+
+    /**
+     * 根据订单编号和版本号更新订单状态
+     * @param orderStatus 更新后的订单状态
+     * @param orderNo 订单编号
+     * @param version 版本号
+     * @return
+     */
+    boolean updateStatusByOrderNoAndVersion(@Param("orderStatus") Integer orderStatus,
+                                            @Param("orderNo") String orderNo,
+                                            @Param("version") Integer version);
 }

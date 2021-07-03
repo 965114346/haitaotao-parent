@@ -63,4 +63,11 @@ public interface IGoodsSpecificationService {
     * @return
     */
     boolean batchDeleteByPrimaryKey(List<Long> ids);
+
+    /**
+     * 获取商品规格列表
+     * @param goodsId 商品id
+     * @return
+     */
+    List<GoodsSpecification> listByGoodsId(Long goodsId);
 }

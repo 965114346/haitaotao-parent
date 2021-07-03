@@ -60,7 +60,17 @@
 		</where>
 	</select>
 
-	<!-- 插入商品规格表 -->
+    <select id="listByGoodsId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_goods_specification
+		<where>
+			`deleted` = 0
+			and `goods_id` = #{goodsId}
+		</where>
+	</select>
+
+    <!-- 插入商品规格表 -->
 	<insert id="insertSelective" parameterType="com.haitaotao.entity.GoodsSpecification" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
@@ -79,15 +89,8 @@
 			<if test="picUrl != null" >
                 `pic_url`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="goodsId != null" >
@@ -102,15 +105,8 @@
 			<if test="picUrl != null" >
 				#{picUrl},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 

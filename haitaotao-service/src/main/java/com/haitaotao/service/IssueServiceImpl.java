@@ -11,7 +11,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Issue;
 import com.haitaotao.mapper.IssueMapper;
-import com.haitaotao.service.IIssueService;
 
 /**
  * 常见问题表
@@ -25,43 +24,33 @@ import com.haitaotao.service.IIssueService;
 public class IssueServiceImpl implements IIssueService {
 
     @Autowired
-    private IssueMapper mapper;
+    private IssueMapper issueMapper;
 
     @Override
-    public Issue selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+    public Issue selectById(Long id) {
+        return issueMapper.selectById(id);
     }
 
     @Override
-    public PageInfo<Issue> selectByPage(Issue issue, Integer pageNo, Integer pageSize){
-        PageHelper.startPage(pageNo,pageSize);
-        List<Issue> list = mapper.selectByCondition(issue);
-        return new PageInfo<>(list);
+    public PageInfo<Issue> pageList(Integer pageNum, Integer pageSize, String question) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Issue> list = issueMapper.listByCondition(question);
+        return PageInfo.of(list);
     }
 
     @Override
-    public List<Issue> selectByCondition(Issue issue){
-        return mapper.selectByCondition(issue);
+    public boolean add(Issue issue){
+        return issueMapper.insert(issue);
     }
 
     @Override
-    public boolean insert(Issue issue){
-        return mapper.insertSelective(issue);
+    public boolean updateById(Issue issue){
+        return issueMapper.updateById(issue);
     }
 
     @Override
-    public boolean updateByPrimaryKey(Issue issue){
-        return mapper.updateByPrimaryKey(issue);
-    }
-
-    @Override
-    public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
+    public boolean removeById(Long id) {
+        return issueMapper.removeById(id);
     }
 
 }

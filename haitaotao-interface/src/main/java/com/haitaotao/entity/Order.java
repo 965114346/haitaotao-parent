@@ -159,6 +159,11 @@ public class Order implements Serializable {
     private Integer comments;
 
     /**
+     * 乐观锁版本号
+     */
+    private Integer version;
+
+    /**
      * 订单关闭时间
      */
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")

@@ -48,16 +48,14 @@
 			a.`sort_order`, a.`update_time` desc
 	</select>
 
-	<select id="listByLevel" resultMap="BaseResultMap">
+	<select id="getById" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from
 		haitaotao_category
 		<where>
-			`level` = #{level}
-			and `deleted` = 0
+			`id` = #{id} and `deleted` = 0
 		</where>
-		order by `sort_order`, `update_time` desc
 	</select>
 
 	<!-- 插入类目表 -->
@@ -153,7 +151,7 @@
 			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id} and deleted = 0
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</update>
 
@@ -164,7 +162,7 @@
 			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id} and deleted = 0
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</update>
 </mapper>

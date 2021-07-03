@@ -40,4 +40,11 @@ public interface IOrderService {
      * @return 订单信息
      */
     Order getByOrderNo(String orderNo);
+
+    /**
+     * 团购超时退款
+     * @param orderNo 订单编号
+     * @return
+     */
+    boolean grouponExpiredRefund(String orderNo);
 }

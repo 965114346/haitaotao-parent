@@ -11,7 +11,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Keyword;
 import com.haitaotao.mapper.KeywordMapper;
-import com.haitaotao.service.IKeywordService;
 
 /**
  * 关键字表
@@ -25,43 +24,33 @@ import com.haitaotao.service.IKeywordService;
 public class KeywordServiceImpl implements IKeywordService {
 
     @Autowired
-    private KeywordMapper mapper;
+    private KeywordMapper keywordMapper;
 
     @Override
-    public Keyword selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+    public Keyword selectById(Long id) {
+        return keywordMapper.selectById(id);
     }
 
     @Override
-    public PageInfo<Keyword> selectByPage(Keyword keyword, Integer pageNo, Integer pageSize){
-        PageHelper.startPage(pageNo,pageSize);
-        List<Keyword> list = mapper.selectByCondition(keyword);
+    public PageInfo<Keyword> pageList(Integer pageNum, Integer pageSize, String keyword, String url){
+        PageHelper.startPage(pageNum, pageSize);
+        List<Keyword> list = keywordMapper.listByCondition(keyword, url);
         return new PageInfo<>(list);
     }
 
     @Override
-    public List<Keyword> selectByCondition(Keyword keyword){
-        return mapper.selectByCondition(keyword);
+    public boolean add(Keyword keyword){
+        return keywordMapper.insert(keyword);
     }
 
     @Override
-    public boolean insert(Keyword keyword){
-        return mapper.insertSelective(keyword);
+    public boolean updateById(Keyword keyword){
+        return keywordMapper.updateById(keyword);
     }
 
     @Override
-    public boolean updateByPrimaryKey(Keyword keyword){
-        return mapper.updateByPrimaryKey(keyword);
-    }
-
-    @Override
-    public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
+    public boolean removeById(Long id) {
+        return keywordMapper.removeById(id);
     }
 
 }

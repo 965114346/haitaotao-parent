@@ -82,5 +82,13 @@ public class Category implements Serializable {
 
     //-----------------------------拓展属性
 
+    /**
+     * 是否有子节点
+     */
     private boolean hasChildren;
+
+    /**
+     * 子节点
+     */
+    private List<Category> children;
 }

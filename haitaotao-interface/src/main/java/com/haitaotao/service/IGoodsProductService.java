@@ -18,4 +18,11 @@ public interface IGoodsProductService {
      * @return
      */
     Long count();
+
+    /**
+     * 查询商品货品列表
+     * @param goodsId 商品id
+     * @return
+     */
+    List<GoodsProduct> listByGoodsId(Long goodsId);
 }

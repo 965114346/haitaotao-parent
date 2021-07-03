@@ -53,4 +53,6 @@ public interface GoodsSpecificationMapper {
     * @return
     */
     boolean batchDeleteByPrimaryKey(List<Long> ids);
+
+    List<GoodsSpecification> listByGoodsId(Long goodsId);
 }

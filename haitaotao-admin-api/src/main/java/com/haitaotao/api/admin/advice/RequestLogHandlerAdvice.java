@@ -55,7 +55,7 @@ public class RequestLogHandlerAdvice {
             HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
             log.info("before <== {}", new RequestLog(request, signatureName, args));
         } catch (IllegalStateException e) {
-            log.info("can not get HttpServletRequest Object");
+            log.warn("can not get HttpServletRequest Object");
         }
     }
 

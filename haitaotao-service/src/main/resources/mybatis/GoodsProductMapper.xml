@@ -68,6 +68,16 @@
 		select count(*) from haitaotao_goods_product where deleted = 0
 	</select>
 
+    <select id="listByGoodsId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_goods_product
+		<where>
+			deleted = 0
+			and `goods_id` = #{goodsId}
+		</where>
+	</select>
+
     <!-- 插入商品货品表 -->
 	<insert id="insertSelective" parameterType="com.haitaotao.entity.GoodsProduct" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">

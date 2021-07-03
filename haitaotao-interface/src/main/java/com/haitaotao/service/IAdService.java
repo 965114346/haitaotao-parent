@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Ad;
 
@@ -14,53 +12,37 @@ import com.haitaotao.entity.Ad;
 public interface IAdService {
 
     /**
-    * 根据id查询广告表
-    * @param id
-    * @return
-    */
-    Ad selectByPrimaryKey(Long id);
+     * 分页查询广告
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param title    标题
+     * @param content  内容
+     * @return
+     */
+    PageInfo<Ad> pageList(Integer pageNum, Integer pageSize, String title, String content);
 
     /**
-    * 分页查询广告表
-    * @param ad
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Ad> selectByPage(Ad ad, Integer pageNo, Integer pageSize);
+     * 新增广告
+     *
+     * @param ad
+     * @return
+     */
+    boolean add(Ad ad);
 
     /**
-    * 不分页查询广告表
-    * @param ad
-    * @return
-    */
-    List<Ad> selectByCondition(Ad ad);
+     * 更新广告
+     *
+     * @param ad
+     * @return
+     */
+    boolean updateById(Ad ad);
 
     /**
-    * 添加广告表
-    * @param ad
-    * @return
-    */
-    boolean insert(Ad ad);
-
-    /**
-    * 根据id更新广告表
-    * @param ad
-    * @return
-    */
-    boolean updateByPrimaryKey(Ad ad);
-
-    /**
-    * 单个删除广告表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除广告表(也可单个删除广告表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 删除广告
+     *
+     * @param id 广告id
+     * @return
+     */
+    boolean removeById(Long id);
 }

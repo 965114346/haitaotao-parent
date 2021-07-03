@@ -1,9 +1,9 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Permission;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * 权限表
@@ -18,47 +18,40 @@ public interface PermissionMapper {
     * @param id
     * @return
     */
-    Permission selectByPrimaryKey(Long id);
+    Permission getById(Long id);
 
     /**
     * 条件查询权限表列表
     * @param permission
     * @return
     */
-    List<Permission> selectByCondition(Permission permission);
+    List<Permission> listByCondition(Permission permission);
+
+    /**
+     *
+     * @param permissionIdList
+     * @return
+     */
+    List<Permission> listPermissionByIdList(@Param("permissionIdList") List<Long> permissionIdList);
 
     /**
     * 插入权限表
     * @param permission
     * @return
     */
-    boolean insertSelective(Permission permission);
+    boolean insert(Permission permission);
 
     /**
     * 更新权限表
     * @param permission
     * @return
     */
-    boolean updateByPrimaryKey(Permission permission);
+    boolean updateById(Permission permission);
 
     /**
     * 根据id删除权限表
     * @param id
     * @return
     */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 根据id批量删除权限表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
-
-    /**
-     * 角色权限名称列表
-     * @param roleIds 角色id列表
-     * @return 权限名称列表
-     */
-    Set<String> listNameByRoleIds(List<Integer> roleIds);
+    boolean removeById(Long id);
 }

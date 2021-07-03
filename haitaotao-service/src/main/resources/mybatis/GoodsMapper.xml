@@ -31,7 +31,7 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询商品基本信息表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_goods
@@ -41,11 +41,12 @@
 	</select>
 
 	<!-- 条件查询商品基本信息表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Goods" >
+	<select id="listByCondition" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_goods
 		<where>
+			and `deleted` = 0
 			<if test="id != null" >
 				and `id` = #{id}
 			</if>
@@ -53,63 +54,10 @@
 				and `goods_no` = #{goodsNo}
 			</if>
 			<if test="name != null and name != ''" >
-				and `name` = #{name}
-			</if>
-			<if test="categoryId != null" >
-				and `category_id` = #{categoryId}
-			</if>
-			<if test="brandId != null" >
-				and `brand_id` = #{brandId}
-			</if>
-			<if test="gallery != null and gallery != ''" >
-				and `gallery` = #{gallery}
-			</if>
-			<if test="keywords != null and keywords != ''" >
-				and `keywords` = #{keywords}
-			</if>
-			<if test="brief != null and brief != ''" >
-				and `brief` = #{brief}
-			</if>
-			<if test="isOnSale != null" >
-				and `is_on_sale` = #{isOnSale}
-			</if>
-			<if test="sortOrder != null" >
-				and `sort_order` = #{sortOrder}
-			</if>
-			<if test="picUrl != null and picUrl != ''" >
-				and `pic_url` = #{picUrl}
-			</if>
-			<if test="shareUrl != null and shareUrl != ''" >
-				and `share_url` = #{shareUrl}
-			</if>
-			<if test="isNew != null" >
-				and `is_new` = #{isNew}
-			</if>
-			<if test="isHot != null" >
-				and `is_hot` = #{isHot}
-			</if>
-			<if test="unit != null and unit != ''" >
-				and `unit` = #{unit}
-			</if>
-			<if test="counterPrice != null" >
-				and `counter_price` = #{counterPrice}
-			</if>
-			<if test="retailPrice != null" >
-				and `retail_price` = #{retailPrice}
-			</if>
-			<if test="detail != null and detail != ''" >
-				and `detail` = #{detail}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
+				and `name` like concat('%', #{name}, '%')
 			</if>
 		</where>
+		order by `id` desc
 	</select>
 
     <select id="count" resultType="java.lang.Long">
@@ -117,7 +65,7 @@
 	</select>
 
     <!-- 插入商品基本信息表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Goods" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Goods" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -174,15 +122,8 @@
 			<if test="detail != null" >
                 `detail`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="goodsNo != null" >
@@ -236,20 +177,13 @@
 			<if test="detail != null" >
 				#{detail},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新商品基本信息表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Goods" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Goods" >
 		update haitaotao_goods
 		<set >
 			<if test="goodsNo != null and goodsNo != ''" >
@@ -303,34 +237,16 @@
 			<if test="detail != null and detail != ''" >
 				`detail` = #{detail},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			id = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除商品基本信息表 -->
 	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_goods where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除商品基本信息表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_goods where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+        update haitaotao_goods set `deleted` = 1 where id = #{id}
 	</update>
 
 </mapper>

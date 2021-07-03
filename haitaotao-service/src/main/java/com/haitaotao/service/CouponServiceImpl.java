@@ -1,17 +1,14 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
+import com.github.pagehelper.PageHelper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Coupon;
 import com.haitaotao.mapper.CouponMapper;
-import com.haitaotao.service.ICouponService;
 
 /**
  * 优惠券信息及规则表
@@ -25,43 +22,30 @@ import com.haitaotao.service.ICouponService;
 public class CouponServiceImpl implements ICouponService {
 
     @Autowired
-    private CouponMapper mapper;
+    private CouponMapper couponMapper;
 
     @Override
-    public Coupon selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+    public PageInfo<Coupon> pageList(Integer pageNum, Integer pageSize, String name, Integer type, Integer status) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> couponMapper.listByCondition(name, type, status));
     }
 
     @Override
-    public PageInfo<Coupon> selectByPage(Coupon coupon, Integer pageNo, Integer pageSize){
-        PageHelper.startPage(pageNo,pageSize);
-        List<Coupon> list = mapper.selectByCondition(coupon);
-        return new PageInfo<>(list);
+    public Coupon getById(Long id) {
+        return couponMapper.getById(id);
     }
 
     @Override
-    public List<Coupon> selectByCondition(Coupon coupon){
-        return mapper.selectByCondition(coupon);
+    public boolean add(Coupon coupon) {
+        return couponMapper.insert(coupon);
     }
 
     @Override
-    public boolean insert(Coupon coupon){
-        return mapper.insertSelective(coupon);
+    public boolean updateById(Coupon coupon) {
+        return couponMapper.updateById(coupon);
     }
 
     @Override
-    public boolean updateByPrimaryKey(Coupon coupon){
-        return mapper.updateByPrimaryKey(coupon);
+    public boolean removeById(Long id) {
+        return couponMapper.removeById(id);
     }
-
-    @Override
-    public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
-    }
-
-    @Override
-    public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
-    }
-
 }

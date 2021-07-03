@@ -1,6 +1,7 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.GrouponRules;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,44 +14,55 @@ import java.util.List;
 public interface GrouponRulesMapper {
 
     /**
-    * 根据id查询团购规则表
-    * @param id
-    * @return
-    */
-    GrouponRules selectByPrimaryKey(Long id);
+     * 根据id查询团购规则表
+     *
+     * @param id
+     * @return
+     */
+    GrouponRules getById(Long id);
 
     /**
-    * 条件查询团购规则表列表
-    * @param grouponRules
-    * @return
-    */
-    List<GrouponRules> selectByCondition(GrouponRules grouponRules);
+     * 根据商品id查询团购规则表
+     * @param goodsId 商品id
+     * @return
+     */
+    GrouponRules getByGoodsId(@Param("goodsId") Long goodsId);
 
     /**
-    * 插入团购规则表
-    * @param grouponRules
-    * @return
-    */
-    boolean insertSelective(GrouponRules grouponRules);
+     * 条件查询团购规则表列表
+     *
+     * @param goodsNo 商品编码
+     * @return
+     */
+    List<GrouponRules> listByCondition(@Param("goodsId") Long goodsNo);
 
     /**
-    * 更新团购规则表
-    * @param grouponRules
-    * @return
-    */
-    boolean updateByPrimaryKey(GrouponRules grouponRules);
+     * 插入团购规则表
+     *
+     * @param grouponRules
+     * @return
+     */
+    boolean insert(GrouponRules grouponRules);
 
     /**
-    * 根据id删除团购规则表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
+     * 更新团购规则表
+     *
+     * @param grouponRules
+     * @return
+     */
+    boolean updateById(GrouponRules grouponRules);
 
     /**
-    * 根据id批量删除团购规则表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 根据id删除团购规则表
+     *
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
+
+    /**
+     * 正常上线的团购规则
+     * @return {@link GrouponRules}
+     */
+    List<GrouponRules> listStatusOn();
 }

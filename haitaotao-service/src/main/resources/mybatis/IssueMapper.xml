@@ -16,7 +16,7 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询常见问题表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_issue
@@ -26,34 +26,24 @@
 	</select>
 
 	<!-- 条件查询常见问题表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Issue" >
+	<select id="listByCondition" resultMap="BaseResultMap" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_issue
 		<where>
+			`deleted` = 0
 			<if test="id != null" >
 				and `id` = #{id}
 			</if>
 			<if test="question != null and question != ''" >
-				and `question` = #{question}
-			</if>
-			<if test="answer != null and answer != ''" >
-				and `answer` = #{answer}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
+				and `question` like concat('%', #{question}, '%')
 			</if>
 		</where>
+		order by `id` desc
 	</select>
 
 	<!-- 插入常见问题表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Issue" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Issue" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -65,15 +55,8 @@
 			<if test="answer != null" >
                 `answer`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="question != null" >
@@ -82,20 +65,13 @@
 			<if test="answer != null" >
 				#{answer},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新常见问题表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Issue" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Issue" >
 		update haitaotao_issue
 		<set >
 			<if test="question != null and question != ''" >
@@ -104,34 +80,16 @@
 			<if test="answer != null and answer != ''" >
 				`answer` = #{answer},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			id = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除常见问题表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_issue where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除常见问题表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_issue where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_issue set `deleted` = 1 where id = #{id}
 	</update>
 
 </mapper>

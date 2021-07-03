@@ -1,5 +1,6 @@
 package com.haitaotao.api.admin.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.haitaotao.api.admin.dto.CategoryCreateDTO;
 import com.haitaotao.api.admin.dto.CategoryUpdateDTO;
 import com.haitaotao.common.util.ResponseUtil;
@@ -23,14 +24,16 @@ public class CategoryController {
     private ICategoryService categoryService;
 
     @GetMapping("/listByParentId")
-    public Object listByParentId(@RequestParam Long parentId) {
-        List<Category> list = categoryService.listByParentId(parentId);
-        return ResponseUtil.ok(list);
+    public Object listByParentId(@RequestParam(defaultValue = "0") Long parentId,
+                                 @RequestParam(defaultValue = "1") Integer pageNum,
+                                 @RequestParam(defaultValue = "10") Integer pageSize) {
+        PageInfo<Category> pageInfo = categoryService.listByParentId(pageNum, pageSize, parentId);
+        return ResponseUtil.okList(pageInfo.getTotal(), pageInfo.getList());
     }
 
-    @GetMapping("/l1")
-    public Object listL1() {
-        List<Category> list = categoryService.listL1();
+    @GetMapping("/listAll")
+    public Object listAll() {
+        List<Category> list = categoryService.listAll();
         return ResponseUtil.ok(list);
     }
 

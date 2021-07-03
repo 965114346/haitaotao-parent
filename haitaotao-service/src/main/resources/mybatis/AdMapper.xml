@@ -22,62 +22,34 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询广告表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_ad
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</select>
 
 	<!-- 条件查询广告表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Ad" >
+	<select id="listByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Ad" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_ad
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
+			and `deleted` = 0
 			<if test="name != null and name != ''" >
 				and `name` = #{name}
-			</if>
-			<if test="link != null and link != ''" >
-				and `link` = #{link}
-			</if>
-			<if test="url != null and url != ''" >
-				and `url` = #{url}
-			</if>
-			<if test="position != null" >
-				and `position` = #{position}
 			</if>
 			<if test="content != null and content != ''" >
 				and `content` = #{content}
 			</if>
-			<if test="startTime != null" >
-				and `start_time` = #{startTime}
-			</if>
-			<if test="endTime != null" >
-				and `end_time` = #{endTime}
-			</if>
-			<if test="enabled != null" >
-				and `enabled` = #{enabled}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
-			</if>
 		</where>
+		order by `create_time` desc
 	</select>
 
 	<!-- 插入广告表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Ad" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Ad" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -107,15 +79,8 @@
 			<if test="enabled != null" >
                 `enabled`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="name != null" >
@@ -142,20 +107,13 @@
 			<if test="enabled != null" >
 				#{enabled},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新广告表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Ad" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Ad" >
 		update haitaotao_ad
 		<set >
 			<if test="name != null and name != ''" >
@@ -182,34 +140,16 @@
 			<if test="enabled != null" >
 				`enabled` = #{enabled},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除广告表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_ad where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除广告表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_ad where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_ad set `deleted` = 1 where id = #{id} and `deleted` = 0
 	</update>
 
 </mapper>

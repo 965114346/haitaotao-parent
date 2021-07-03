@@ -1,6 +1,5 @@
 package com.haitaotao.api.admin.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.code.kaptcha.Producer;
 import com.google.common.cache.Cache;
 import com.haitaotao.api.admin.annotations.CurrentAdmin;
@@ -11,6 +10,8 @@ import com.haitaotao.api.admin.vo.LoginVO;
 import com.haitaotao.api.admin.vo.UserInfoVO;
 import com.haitaotao.common.util.ResponseUtil;
 import com.haitaotao.entity.Admin;
+import com.haitaotao.entity.Permission;
+import com.haitaotao.entity.Role;
 import com.haitaotao.service.IPermissionService;
 import com.haitaotao.service.IRoleService;
 import io.swagger.annotations.Api;
@@ -30,8 +31,10 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author yangyang
@@ -97,12 +100,16 @@ public class LoginController {
     @ApiOperation(value = "获取用户信息", httpMethod = "GET")
     @GetMapping("/getUserInfo")
     public Object roleAndPermission(@CurrentAdmin Admin admin) {
-        List<Integer> roleIds = JSONObject.parseArray(admin.getRoleIds(), Integer.class);
 
-        Set<String> roles = roleService.listNameByIds(roleIds);
-        Set<String> permissions = permissionService.listNameByRoleIds(roleIds);
+        List<Role> roleList = roleService.listRoleByAdminId(admin.getId());
 
-        return ResponseUtil.ok(new UserInfoVO(admin.getUsername(), admin.getAvatar(), roles, permissions));
+        Set<String> roleNames = roleList.stream().map(Role::getName).collect(Collectors.toSet());
+        List<Long> roleIdList = roleList.stream().map(Role::getId).collect(Collectors.toList());
+        List<Permission> permissionList = permissionService.listPermissionByRoleIdList(roleIdList);
+
+        Set<String> permissionNames = permissionList.stream().map(Permission::getPermission).collect(Collectors.toSet());
+
+        return ResponseUtil.ok(new UserInfoVO(admin.getUsername(), admin.getAvatar(), roleNames, permissionNames));
     }
 
     /**

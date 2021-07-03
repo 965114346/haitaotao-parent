@@ -18,13 +18,7 @@ public interface ICategoryService {
      * @param parentId 父级id
      * @return 子集品类列表
      */
-    List<Category> listByParentId(Long parentId);
-
-    /**
-     * 获取一级品类列表
-     * @return 一级品类列表
-     */
-    List<Category> listL1();
+    PageInfo<Category> listByParentId(Integer pageNum, Integer pageSize, Long parentId);
 
     /**
      * 添加品类
@@ -46,4 +40,17 @@ public interface ICategoryService {
      * @return 更新结果
      */
     boolean updateById(Category category);
+
+    /**
+     * 所有品类树形节点列表
+     * @return
+     */
+    List<Category> listAll();
+
+    /**
+     * 根据id获取品类信息
+     * @param id 品类id
+     * @return
+     */
+    Category getById(Long id);
 }

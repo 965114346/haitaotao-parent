@@ -1,7 +1,6 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
+import com.haitaotao.enums.GrouponEnum;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Groupon;
 import com.haitaotao.mapper.GrouponMapper;
-import com.haitaotao.service.IGrouponService;
+
+import java.util.List;
 
 /**
  * 团购活动表
@@ -25,43 +25,36 @@ import com.haitaotao.service.IGrouponService;
 public class GrouponServiceImpl implements IGrouponService {
 
     @Autowired
-    private GrouponMapper mapper;
+    private GrouponMapper grouponMapper;
 
     @Override
-    public Groupon selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+    public PageInfo<Groupon> pageList(Integer pageNum, Integer pageSize, Long ruleId) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> grouponMapper.listByCondition(ruleId));
     }
 
     @Override
-    public PageInfo<Groupon> selectByPage(Groupon groupon, Integer pageNo, Integer pageSize){
-        PageHelper.startPage(pageNo,pageSize);
-        List<Groupon> list = mapper.selectByCondition(groupon);
-        return new PageInfo<>(list);
+    public List<Groupon> listByRulesId(Long grouponRuleId) {
+        return grouponMapper.listByCondition(grouponRuleId);
     }
 
     @Override
-    public List<Groupon> selectByCondition(Groupon groupon){
-        return mapper.selectByCondition(groupon);
+    public boolean updateStatusFail(Long id) {
+        Groupon update = new Groupon().setId(id).setStatus(GrouponEnum.STATUS_FAIL.getValue());
+        return grouponMapper.updateById(update);
     }
 
     @Override
-    public boolean insert(Groupon groupon){
-        return mapper.insertSelective(groupon);
+    public boolean add(Groupon groupon) {
+        return grouponMapper.insert(groupon);
     }
 
     @Override
-    public boolean updateByPrimaryKey(Groupon groupon){
-        return mapper.updateByPrimaryKey(groupon);
+    public boolean updateById(Groupon groupon) {
+        return grouponMapper.updateById(groupon);
     }
 
     @Override
-    public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
+    public boolean removeById(Long id) {
+        return grouponMapper.removeById(id);
     }
-
-    @Override
-    public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
-    }
-
 }

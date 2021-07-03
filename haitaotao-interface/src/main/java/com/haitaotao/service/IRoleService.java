@@ -15,9 +15,40 @@ import com.haitaotao.entity.Role;
 public interface IRoleService {
 
     /**
-     * 角色id查询角色名称列表
-     * @param roleIds
+     * 管理员角色列表
+     * @param adminId 管理员id
+     * @return {@link Role}
+     */
+    List<Role> listRoleByAdminId(Long adminId);
+
+    /**
+     * 分页查询角色
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param name     角色名称
+     * @return {@link Role}
+     */
+    PageInfo<Role> pageList(Integer pageNum, Integer pageSize, String name);
+
+    /**
+     * 添加角色
+     * @param role {@link Role}
      * @return
      */
-    Set<String> listNameByIds(List<Integer> roleIds);
+    boolean add(Role role);
+
+    /**
+     * 更新角色信息
+     * @param role {@link Role}
+     * @return
+     */
+    boolean updateById(Role role);
+
+    /**
+     * 根据角色id删除角色
+     * @param id 角色id
+     * @return
+     */
+    boolean removeById(Long id);
 }

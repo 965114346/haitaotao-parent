@@ -7,8 +7,10 @@ import java.util.Objects;
 
 import com.haitaotao.entity.OrderGoods;
 import com.haitaotao.entity.User;
+import com.haitaotao.enums.OrderStatusEnum;
 import com.haitaotao.mapper.OrderGoodsMapper;
 import com.haitaotao.mapper.UserMapper;
+import com.haitaotao.util.OrderUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.DubboService;
@@ -75,6 +77,15 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Order getByOrderNo(String orderNo) {
-        return null;
+        return orderMapper.getByOrderNo(orderNo);
+    }
+
+    @Override
+    public boolean grouponExpiredRefund(String orderNo) {
+        Order order = orderMapper.getByOrderNo(orderNo);
+        if (!OrderUtil.isPayStatus(order)) {
+            return false;
+        }
+        return orderMapper.updateStatusByOrderNoAndVersion(OrderStatusEnum.STATUS_REFUND_GROUPON.getValue(), orderNo, order.getVersion());
     }
 }

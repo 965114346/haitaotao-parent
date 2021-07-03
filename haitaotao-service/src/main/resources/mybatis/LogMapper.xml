@@ -20,60 +20,22 @@
 		`id`, `admin`, `ip`, `type`, `action`, `status`, `result`, `comment`, `create_time`, `update_time`, `deleted`
 	</sql>
 
-	<!-- 根据PrimaryKey查询操作日志表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-		select
-		<include refid="Base_Column_List" />
-		from haitaotao_log
-		<where>
-			id = #{id}
-		</where>
-	</select>
-
 	<!-- 条件查询操作日志表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Log" >
+	<select id="listByCondition" resultMap="BaseResultMap" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_log
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
-			<if test="admin != null and admin != ''" >
-				and `admin` = #{admin}
-			</if>
-			<if test="ip != null and ip != ''" >
-				and `ip` = #{ip}
-			</if>
-			<if test="type != null" >
-				and `type` = #{type}
-			</if>
-			<if test="action != null and action != ''" >
-				and `action` = #{action}
-			</if>
-			<if test="status != null" >
-				and `status` = #{status}
-			</if>
-			<if test="result != null and result != ''" >
-				and `result` = #{result}
-			</if>
-			<if test="comment != null and comment != ''" >
-				and `comment` = #{comment}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
+			and `deleted` = 0
+			<if test="username != null and username != ''" >
+				and `admin` like concat('%', #{username}, '%')
 			</if>
 		</where>
+		order by create_time desc
 	</select>
 
 	<!-- 插入操作日志表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Log" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Log" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -100,15 +62,8 @@
 			<if test="comment != null" >
                 `comment`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="admin != null" >
@@ -132,71 +87,9 @@
 			<if test="comment != null" >
 				#{comment},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
-
-	<!-- 根据PrimaryKey更新操作日志表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Log" >
-		update haitaotao_log
-		<set >
-			<if test="admin != null and admin != ''" >
-				`admin` = #{admin},
-			</if>
-			<if test="ip != null and ip != ''" >
-				`ip` = #{ip},
-			</if>
-			<if test="type != null" >
-				`type` = #{type},
-			</if>
-			<if test="action != null and action != ''" >
-				`action` = #{action},
-			</if>
-			<if test="status != null" >
-				`status` = #{status},
-			</if>
-			<if test="result != null and result != ''" >
-				`result` = #{result},
-			</if>
-			<if test="comment != null and comment != ''" >
-				`comment` = #{comment},
-			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
-		</set>
-		<where>
-			id = #{id}
-		</where>
-	</update>
-
-	<!-- 根据PrimaryKey删除操作日志表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_log where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除操作日志表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_log where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
-	</update>
 
 </mapper>

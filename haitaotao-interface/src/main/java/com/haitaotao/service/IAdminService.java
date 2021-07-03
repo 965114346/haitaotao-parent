@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Admin;
 
@@ -22,52 +20,50 @@ public interface IAdminService {
 
     /**
     * 根据id查询管理员表
-    * @param id
+    * @param id 管理员id
     * @return
     */
-    Admin selectByPrimaryKey(Long id);
+    Admin getById(Long id);
 
     /**
-    * 分页查询管理员表
-    * @param admin
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Admin> selectByPage(Admin admin, Integer pageNo, Integer pageSize);
+     * 分页查询管理员
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param username     名称
+     * @return {@link Admin}
+     */
+    PageInfo<Admin> pageList(Integer pageNum, Integer pageSize, String username);
 
     /**
-    * 不分页查询管理员表
-    * @param admin
-    * @return
-    */
-    List<Admin> selectByCondition(Admin admin);
+     * 新增管理员
+     *
+     * @param admin {@link Admin}
+     * @return
+     */
+    boolean add(Admin admin);
 
     /**
-    * 添加管理员表
-    * @param admin
-    * @return
-    */
-    boolean insert(Admin admin);
+     * 更新管理员
+     *
+     * @param admin {@link Admin}
+     * @return
+     */
+    boolean updateById(Admin admin);
 
     /**
-    * 根据id更新管理员表
-    * @param admin
-    * @return
-    */
-    boolean updateByPrimaryKey(Admin admin);
+     * 更新管理员登录信息
+     * @param id 管理员id
+     * @param ip 登录ip
+     * @return
+     */
+    boolean updateLoginInfo(Long id, String ip);
 
     /**
-    * 单个删除管理员表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除管理员表(也可单个删除管理员表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 删除管理员
+     *
+     * @param id 管理员id
+     * @return
+     */
+    boolean removeById(Long id);
 }

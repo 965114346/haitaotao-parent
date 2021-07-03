@@ -21,59 +21,71 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询团购规则表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_groupon_rules
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
+		limit 1
+	</select>
+
+	<select id="getByGoodsId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_groupon_rules
+		<where>
+			`goods_id` = #{goodsId} and `deleted` = 0
+		</where>
+		limit 1
 	</select>
 
 	<!-- 条件查询团购规则表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.GrouponRules" >
+	<select id="listByCondition" resultMap="BaseResultMap" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_groupon_rules
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
+			and `deleted` = 0
 			<if test="goodsId != null" >
 				and `goods_id` = #{goodsId}
 			</if>
-			<if test="goodsName != null and goodsName != ''" >
-				and `goods_name` = #{goodsName}
-			</if>
-			<if test="picUrl != null and picUrl != ''" >
-				and `pic_url` = #{picUrl}
-			</if>
-			<if test="discount != null" >
-				and `discount` = #{discount}
-			</if>
-			<if test="discountMember != null" >
-				and `discount_member` = #{discountMember}
-			</if>
-			<if test="expireTime != null" >
-				and `expire_time` = #{expireTime}
-			</if>
-			<if test="status != null" >
-				and `status` = #{status}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
-			</if>
+<!--			<if test="goodsName != null and goodsName != ''" >-->
+<!--				and `goods_name` = #{goodsName}-->
+<!--			</if>-->
+<!--			<if test="picUrl != null and picUrl != ''" >-->
+<!--				and `pic_url` = #{picUrl}-->
+<!--			</if>-->
+<!--			<if test="discount != null" >-->
+<!--				and `discount` = #{discount}-->
+<!--			</if>-->
+<!--			<if test="discountMember != null" >-->
+<!--				and `discount_member` = #{discountMember}-->
+<!--			</if>-->
+<!--			<if test="expireTime != null" >-->
+<!--				and `expire_time` = #{expireTime}-->
+<!--			</if>-->
+<!--			<if test="status != null" >-->
+<!--				and `status` = #{status}-->
+<!--			</if>-->
 		</where>
+		order by create_time desc
+	</select>
+
+	<select id="listStatusOn" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_groupon_rules
+		<where>
+			and `deleted` = 0
+			and `status` = 0
+		</where>
+		order by create_time desc
 	</select>
 
 	<!-- 插入团购规则表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.GrouponRules" >
+	<insert id="insert" parameterType="com.haitaotao.entity.GrouponRules" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -97,18 +109,8 @@
 			<if test="expireTime != null" >
                 `expire_time`,
             </if>
-			<if test="status != null" >
-                `status`,
-            </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="goodsId != null" >
@@ -129,23 +131,13 @@
 			<if test="expireTime != null" >
 				#{expireTime},
 			</if>
-			<if test="status != null" >
-				#{status},
-			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新团购规则表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.GrouponRules" >
+	<update id="updateById" parameterType="com.haitaotao.entity.GrouponRules" >
 		update haitaotao_groupon_rules
 		<set >
 			<if test="goodsId != null" >
@@ -169,34 +161,16 @@
 			<if test="status != null" >
 				`status` = #{status},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除团购规则表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_groupon_rules where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除团购规则表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_groupon_rules where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_groupon_rules set `deleted` = 1 where `id` = #{id} and `deleted` = 0
 	</update>
 
 </mapper>

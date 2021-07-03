@@ -49,11 +49,6 @@ public class Admin implements Serializable {
     private String avatar;
 
     /**
-     * 角色列表
-     */
-    private String roleIds;
-
-    /**
      * 创建时间
      */
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")

@@ -23,9 +23,9 @@ public class Groupon implements Serializable {
     private Long id;
 
     /**
-     * 关联的订单ID
+     * 关联的订单编号
      */
-    private Long orderId;
+    private String orderNo;
 
     /**
      * 如果是开团用户，则groupon_id是0；如果是参团用户，则groupon_id是团购活动ID
@@ -59,7 +59,7 @@ public class Groupon implements Serializable {
     private Date creatorUserTime;
 
     /**
-     * 团购活动状态，开团未支付则0，开团中则1，开团失败则2
+     * 团购活动状态，开团未支付则0，开团中则1，拼团成功则2，拼团失败则3
      */
     private Integer status;
 

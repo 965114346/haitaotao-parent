@@ -45,6 +45,7 @@ public class StatelessAuthFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+        // 可以考虑把这一段代码移到isAccessAllowed以做token异常类型判断到底是无效的token还是token过期等等
         HttpServletResponse response = WebUtils.toHttp(servletResponse);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");

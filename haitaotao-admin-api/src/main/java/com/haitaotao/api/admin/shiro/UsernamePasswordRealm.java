@@ -1,5 +1,7 @@
 package com.haitaotao.api.admin.shiro;
 
+import com.haitaotao.api.admin.advice.RequestLogHandlerAdvice;
+import com.haitaotao.api.admin.util.IpUtil;
 import com.haitaotao.common.bcrypt.BCryptPasswordEncoder;
 import com.haitaotao.common.util.JwtUtil;
 import com.haitaotao.entity.Admin;
@@ -12,7 +14,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 /**
@@ -54,6 +59,14 @@ public class UsernamePasswordRealm extends AuthorizingRealm {
             // 匹配密码
             if (!bCryptPasswordEncoder.matches(password, admin.getPassword())) {
                 throw new IncorrectCredentialsException();
+            }
+
+            try {
+                // 非web环境获取request会抛出异常，不能使用 @Autowried 注入, 手动捕获异常
+                HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
+                adminService.updateLoginInfo(admin.getId(), IpUtil.getIpAddress(request));
+            } catch (IllegalStateException e) {
+                log.warn("can not get HttpServletRequest Object");
             }
 
             String tokenString = JwtUtil.sign(JwtUtil.TOKEN_SECRET, admin);

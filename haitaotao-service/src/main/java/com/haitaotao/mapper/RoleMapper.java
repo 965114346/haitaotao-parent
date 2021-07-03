@@ -1,6 +1,7 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Role;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -14,51 +15,50 @@ import java.util.Set;
 public interface RoleMapper {
 
     /**
-    * 根据id查询角色表
-    * @param id
-    * @return
-    */
-    Role selectByPrimaryKey(Long id);
-
-    /**
-    * 条件查询角色表列表
-    * @param role
-    * @return
-    */
-    List<Role> selectByCondition(Role role);
-
-    /**
-    * 插入角色表
-    * @param role
-    * @return
-    */
-    boolean insertSelective(Role role);
-
-    /**
-    * 更新角色表
-    * @param role
-    * @return
-    */
-    boolean updateByPrimaryKey(Role role);
-
-    /**
-    * 根据id删除角色表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 根据id批量删除角色表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
-
-    /**
-     * 可用角色名称列表
-     * @param roleIds
+     * 根据id查询角色表
+     *
+     * @param id
      * @return
      */
-    Set<String> listNameByIds(List<Integer> roleIds);
+    Role getById(Long id);
+
+    /**
+     * 条件查询角色表列表
+     *
+     * @param name 角色名称
+     * @return
+     */
+    List<Role> listByCondition(@Param("name") String name);
+
+    /**
+     * 角色列表
+     *
+     * @param roleIdList
+     * @return
+     */
+    List<Role> listRoleByIdList(@Param("roleIdList") List<Long> roleIdList);
+
+    /**
+     * 插入角色表
+     *
+     * @param role
+     * @return
+     */
+    boolean insert(Role role);
+
+    /**
+     * 更新角色表
+     *
+     * @param role
+     * @return
+     */
+    boolean updateById(Role role);
+
+    /**
+     * 根据id删除角色表
+     *
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
 }

@@ -1,6 +1,7 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Log;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,44 +14,16 @@ import java.util.List;
 public interface LogMapper {
 
     /**
-    * 根据id查询操作日志表
-    * @param id
-    * @return
-    */
-    Log selectByPrimaryKey(Long id);
-
-    /**
     * 条件查询操作日志表列表
-    * @param log
+    * @param username 管理员名称
     * @return
     */
-    List<Log> selectByCondition(Log log);
+    List<Log> listByCondition(@Param("username") String username);
 
     /**
     * 插入操作日志表
     * @param log
     * @return
     */
-    boolean insertSelective(Log log);
-
-    /**
-    * 更新操作日志表
-    * @param log
-    * @return
-    */
-    boolean updateByPrimaryKey(Log log);
-
-    /**
-    * 根据id删除操作日志表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 根据id批量删除操作日志表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+    boolean insert(Log log);
 }

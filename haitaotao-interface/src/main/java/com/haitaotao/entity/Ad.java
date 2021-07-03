@@ -60,7 +60,7 @@ public class Ad implements Serializable {
     private Date endTime;
 
     /**
-     * 是否启动
+     * 是否启动（0：禁用 1：启用）
      */
     private Integer enabled;
 

@@ -31,4 +31,9 @@ public class GoodsProductServiceImpl implements IGoodsProductService {
     public Long count() {
         return goodsProductMapper.count();
     }
+
+    @Override
+    public List<GoodsProduct> listByGoodsId(Long goodsId) {
+        return goodsProductMapper.listByGoodsId(goodsId);
+    }
 }

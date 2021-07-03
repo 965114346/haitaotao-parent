@@ -19,7 +19,7 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询关键字表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_keyword
@@ -29,43 +29,24 @@
 	</select>
 
 	<!-- 条件查询关键字表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Keyword" >
+	<select id="listByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Keyword" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_keyword
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
+			and `deleted` = 0
 			<if test="keyword != null and keyword != ''" >
-				and `keyword` = #{keyword}
+				and `keyword` like concat('%', #{keyword}, '%')
 			</if>
 			<if test="url != null and url != ''" >
-				and `url` = #{url}
-			</if>
-			<if test="isHot != null" >
-				and `is_hot` = #{isHot}
-			</if>
-			<if test="isDefault != null" >
-				and `is_default` = #{isDefault}
-			</if>
-			<if test="sortOrder != null" >
-				and `sort_order` = #{sortOrder}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
+				and `url` like concat('%', #{url}, '%')
 			</if>
 		</where>
+		order by `sort_order`, id desc
 	</select>
 
 	<!-- 插入关键字表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Keyword" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Keyword" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -86,15 +67,8 @@
 			<if test="sortOrder != null" >
                 `sort_order`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="keyword != null" >
@@ -112,20 +86,13 @@
 			<if test="sortOrder != null" >
 				#{sortOrder},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新关键字表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Keyword" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Keyword" >
 		update haitaotao_keyword
 		<set >
 			<if test="keyword != null and keyword != ''" >
@@ -143,34 +110,16 @@
 			<if test="sortOrder != null" >
 				`sort_order` = #{sortOrder},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			id = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除关键字表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_keyword where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除关键字表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_keyword where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_keyword set `deleted` = 1 where id = #{id}
 	</update>
 
 </mapper>

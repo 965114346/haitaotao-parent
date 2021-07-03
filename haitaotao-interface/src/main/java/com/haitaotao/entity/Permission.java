@@ -23,14 +23,14 @@ public class Permission implements Serializable {
     private Long id;
 
     /**
-     * 角色ID
-     */
-    private Long roleId;
-
-    /**
      * 权限
      */
     private String permission;
+
+    /**
+     * 权限描述
+     */
+    private String desc;
 
     /**
      * 创建时间

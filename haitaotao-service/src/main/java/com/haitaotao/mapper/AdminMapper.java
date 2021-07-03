@@ -1,6 +1,7 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Admin;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,42 +18,7 @@ public interface AdminMapper {
     * @param id
     * @return
     */
-    Admin selectByPrimaryKey(Long id);
-
-    /**
-    * 条件查询管理员表列表
-    * @param admin
-    * @return
-    */
-    List<Admin> selectByCondition(Admin admin);
-
-    /**
-    * 插入管理员表
-    * @param admin
-    * @return
-    */
-    boolean insertSelective(Admin admin);
-
-    /**
-    * 更新管理员表
-    * @param admin
-    * @return
-    */
-    boolean updateByPrimaryKey(Admin admin);
-
-    /**
-    * 根据id删除管理员表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 根据id批量删除管理员表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+    Admin getById(Long id);
 
     /**
      * 根据用户名匹配一个管理员
@@ -60,4 +26,40 @@ public interface AdminMapper {
      * @return 管理员信息
      */
     Admin getByUsername(String username);
+
+    /**
+    * 条件查询管理员表列表
+    * @param username 用户名
+    * @return
+    */
+    List<Admin> listByCondition(@Param("username") String username);
+
+    /**
+    * 插入管理员表
+    * @param admin
+    * @return
+    */
+    boolean insert(Admin admin);
+
+    /**
+    * 更新管理员表
+    * @param admin
+    * @return
+    */
+    boolean updateById(Admin admin);
+
+    /**
+     * 更新管理员登录信息
+     * @param id 管理员id
+     * @param ip 登录ip
+     * @return
+     */
+    boolean updateLoginInfo(@Param("id") Long id, @Param("ip") String ip);
+
+    /**
+    * 根据id删除管理员表
+    * @param id
+    * @return
+    */
+    boolean removeById(Long id);
 }

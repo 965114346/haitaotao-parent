@@ -59,4 +59,11 @@ public interface GoodsProductMapper {
      * @return
      */
     Long count();
+
+    /**
+     *
+     * @param goodsId
+     * @return
+     */
+    List<GoodsProduct> listByGoodsId(Long goodsId);
 }

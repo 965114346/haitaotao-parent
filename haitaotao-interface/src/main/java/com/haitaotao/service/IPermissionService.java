@@ -16,8 +16,8 @@ public interface IPermissionService {
 
     /**
      * 角色权限名称列表
-     * @param roleIds 角色id列表
+     * @param roleIdList 角色id列表
      * @return 权限名称列表
      */
-    Set<String> listNameByRoleIds(List<Integer> roleIds);
+    List<Permission> listPermissionByRoleIdList(List<Long> roleIdList);
 }

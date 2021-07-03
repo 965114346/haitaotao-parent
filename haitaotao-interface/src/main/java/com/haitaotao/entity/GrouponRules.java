@@ -46,7 +46,7 @@ public class GrouponRules implements Serializable {
     /**
      * 达到优惠条件的人数
      */
-    private Long discountMember;
+    private Integer discountMember;
 
     /**
      * 团购过期时间

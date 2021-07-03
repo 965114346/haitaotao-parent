@@ -1,9 +1,9 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.GrouponRules;
+
+import java.util.List;
 
 /**
  * 团购规则表
@@ -14,53 +14,53 @@ import com.haitaotao.entity.GrouponRules;
 public interface IGrouponRulesService {
 
     /**
-    * 根据id查询团购规则表
-    * @param id
-    * @return
-    */
-    GrouponRules selectByPrimaryKey(Long id);
+     * 根据规则id获取团购规则
+     * @param id 团购规则id
+     * @return {@link GrouponRules}
+     */
+    GrouponRules getById(Long id);
 
     /**
-    * 分页查询团购规则表
-    * @param grouponRules
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<GrouponRules> selectByPage(GrouponRules grouponRules, Integer pageNo, Integer pageSize);
+     * 分页查询团购规则
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param goodsId 商品Id
+     * @return {@link GrouponRules}
+     */
+    PageInfo<GrouponRules> pageList(Integer pageNum, Integer pageSize, Long goodsId);
 
     /**
-    * 不分页查询团购规则表
-    * @param grouponRules
-    * @return
-    */
-    List<GrouponRules> selectByCondition(GrouponRules grouponRules);
+     * 新增团购规则
+     * @param grouponRules {@link GrouponRules}
+     * @return
+     */
+    boolean add(GrouponRules grouponRules);
 
     /**
-    * 添加团购规则表
-    * @param grouponRules
-    * @return
-    */
-    boolean insert(GrouponRules grouponRules);
+     * 更新团购规则
+     * @param grouponRules
+     * @return
+     */
+    boolean updateById(GrouponRules grouponRules);
 
     /**
-    * 根据id更新团购规则表
-    * @param grouponRules
-    * @return
-    */
-    boolean updateByPrimaryKey(GrouponRules grouponRules);
+     * 更新团购规则状态
+     * @param id 团购规则id
+     * @param status 需要更新的团购状态
+     * @return
+     */
+    boolean updateStatusById(Long id, Integer status);
 
     /**
-    * 单个删除团购规则表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
+     * 删除团购规则
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
 
     /**
-    * 批量删除团购规则表(也可单个删除团购规则表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 正常上线的团购规则
+     * @return {@link GrouponRules}
+     */
+    List<GrouponRules> listStatusOn();
 }

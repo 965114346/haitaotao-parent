@@ -31,4 +31,31 @@ public class GoodsServiceImpl implements IGoodsService {
     public Long count() {
         return goodsMapper.count();
     }
+
+    @Override
+    public PageInfo<Goods> pageList(Integer pageNum, Integer pageSize, Long id, String goodsNo, String name) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Goods> list = goodsMapper.listByCondition(id, goodsNo, name);
+        return PageInfo.of(list);
+    }
+
+    @Override
+    public boolean add(Goods goods) {
+        return false;
+    }
+
+    @Override
+    public boolean updateById(Goods goods) {
+        return false;
+    }
+
+    @Override
+    public boolean removeById(Long id) {
+        return false;
+    }
+
+    @Override
+    public Goods getById(Long id) {
+        return goodsMapper.getById(id);
+    }
 }

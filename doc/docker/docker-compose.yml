@@ -1,5 +1,10 @@
 version: '3'
 services:
+  redis:
+    image: redis
+    container_name: haitaotao_redis
+    ports:
+    - 6379:6379
   mysql57:
     image: nacos/nacos-mysql:5.7
     container_name: mysql57
@@ -27,7 +32,6 @@ services:
       - 9555:9555
     depends_on:
       - mysql57
-    restart: on-failure
   minio:
     image: minio/minio
     container_name: minio
@@ -36,7 +40,6 @@ services:
       MINIO_SECRET_KEY: admin123456
     ports:
       - 9000:9000
-    restart: on-failure
     command: server /data
 #  prometheus:
 #    container_name: prometheus

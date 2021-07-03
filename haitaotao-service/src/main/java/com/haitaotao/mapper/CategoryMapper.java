@@ -20,13 +20,6 @@ public interface CategoryMapper {
     List<Category> listByParentId(Long parentId);
 
     /**
-     * 根据等级获取品类列表
-     * @param level 等级
-     * @return 品类列表
-     */
-    List<Category> listByLevel(String level);
-
-    /**
      * 添加品类
      * @param category 品类实体
      * @return 添加结果
@@ -46,4 +39,12 @@ public interface CategoryMapper {
      * @return 删除结果
      */
     boolean removeById(Long id);
+
+    /**
+     *
+     * 根据id获取品类信息
+     * @param id 品类id
+     * @return
+     */
+    Category getById(Long id);
 }

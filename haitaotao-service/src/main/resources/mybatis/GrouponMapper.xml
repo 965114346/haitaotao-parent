@@ -4,7 +4,7 @@
 
 	<resultMap id="BaseResultMap" type="com.haitaotao.entity.Groupon" >
 		<id column="id" property="id" />
-		<result column="order_id" property="orderId" />
+		<result column="order_no" property="orderNo" />
 		<result column="groupon_id" property="grouponId" />
 		<result column="rules_id" property="rulesId" />
 		<result column="user_id" property="userId" />
@@ -18,73 +18,42 @@
 	</resultMap>
 
 	<sql id="Base_Column_List" >
-		`id`, `order_id`, `groupon_id`, `rules_id`, `user_id`, `share_url`, `creator_user_id`, `creator_user_time`, `status`, `create_time`, `update_time`, `deleted`
+		`id`, `order_no`, `groupon_id`, `rules_id`, `user_id`, `share_url`, `creator_user_id`, `creator_user_time`, `status`, `create_time`, `update_time`, `deleted`
 	</sql>
 
 	<!-- 根据PrimaryKey查询团购活动表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_groupon
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</select>
 
 	<!-- 条件查询团购活动表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Groupon" >
+	<select id="listByCondition" resultMap="BaseResultMap" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_groupon
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
-			<if test="orderId != null" >
-				and `order_id` = #{orderId}
-			</if>
-			<if test="grouponId != null" >
-				and `groupon_id` = #{grouponId}
-			</if>
+			and `deleted` = 0
 			<if test="rulesId != null" >
 				and `rules_id` = #{rulesId}
 			</if>
-			<if test="userId != null" >
-				and `user_id` = #{userId}
-			</if>
-			<if test="shareUrl != null and shareUrl != ''" >
-				and `share_url` = #{shareUrl}
-			</if>
-			<if test="creatorUserId != null" >
-				and `creator_user_id` = #{creatorUserId}
-			</if>
-			<if test="creatorUserTime != null" >
-				and `creator_user_time` = #{creatorUserTime}
-			</if>
-			<if test="status != null" >
-				and `status` = #{status}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
-			</if>
 		</where>
+		order by create_time desc
 	</select>
 
 	<!-- 插入团购活动表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Groupon" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Groupon" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		insert into haitaotao_groupon
 		<trim prefix="(" suffix=")" suffixOverrides="," >
-			<if test="orderId != null" >
-                `order_id`,
+			<if test="orderNo != null" >
+                `order_no`,
             </if>
 			<if test="grouponId != null" >
                 `groupon_id`,
@@ -107,19 +76,12 @@
 			<if test="status != null" >
                 `status`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
-			<if test="orderId != null" >
-				#{orderId},
+			<if test="orderNo != null" >
+				#{orderNo},
 			</if>
 			<if test="grouponId != null" >
 				#{grouponId},
@@ -142,24 +104,17 @@
 			<if test="status != null" >
 				#{status},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新团购活动表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Groupon" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Groupon" >
 		update haitaotao_groupon
 		<set >
-			<if test="orderId != null" >
-				`order_id` = #{orderId},
+			<if test="orderNo != null and orderNo != ''" >
+				`order_no` = #{orderNo},
 			</if>
 			<if test="grouponId != null" >
 				`groupon_id` = #{grouponId},
@@ -182,34 +137,16 @@
 			<if test="status != null" >
 				`status` = #{status},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			id = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除团购活动表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_groupon where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除团购活动表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_groupon where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_groupon set `deleted` = 1 where `id` = #{id} and `deleted` = 0
 	</update>
 
 </mapper>

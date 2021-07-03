@@ -14,53 +14,45 @@ import com.haitaotao.entity.Keyword;
 public interface IKeywordService {
 
     /**
-    * 根据id查询关键字表
-    * @param id
-    * @return
-    */
-    Keyword selectByPrimaryKey(Long id);
+     * 根据id查询关键字表
+     *
+     * @param id
+     * @return
+     */
+    Keyword selectById(Long id);
 
     /**
-    * 分页查询关键字表
-    * @param keyword
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Keyword> selectByPage(Keyword keyword, Integer pageNo, Integer pageSize);
+     * 分页查询关键字表
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param keyword 关键字
+     * @param url 跳转链接
+     * @return
+     */
+    PageInfo<Keyword> pageList(Integer pageNum, Integer pageSize, String keyword, String url);
 
     /**
-    * 不分页查询关键字表
-    * @param keyword
-    * @return
-    */
-    List<Keyword> selectByCondition(Keyword keyword);
+     * 添加关键字表
+     *
+     * @param keyword
+     * @return
+     */
+    boolean add(Keyword keyword);
 
     /**
-    * 添加关键字表
-    * @param keyword
-    * @return
-    */
-    boolean insert(Keyword keyword);
+     * 根据id更新关键字表
+     *
+     * @param keyword
+     * @return
+     */
+    boolean updateById(Keyword keyword);
 
     /**
-    * 根据id更新关键字表
-    * @param keyword
-    * @return
-    */
-    boolean updateByPrimaryKey(Keyword keyword);
-
-    /**
-    * 单个删除关键字表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除关键字表(也可单个删除关键字表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 单个删除关键字表
+     *
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
 }

@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Topic;
 
@@ -14,53 +12,40 @@ import com.haitaotao.entity.Topic;
 public interface ITopicService {
 
     /**
-    * 根据id查询专题表
-    * @param id
-    * @return
-    */
-    Topic selectByPrimaryKey(Long id);
+     * 分页查询专题
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param title 专题标题
+     * @param subtitle 专题子标题
+     * @return
+     */
+    PageInfo<Topic> pageList(Integer pageNum, Integer pageSize, String title, String subtitle);
 
     /**
-    * 分页查询专题表
-    * @param topic
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Topic> selectByPage(Topic topic, Integer pageNo, Integer pageSize);
+     * 根据id获取专题信息
+     * @param id 专题id
+     * @return
+     */
+    Topic getById(Long id);
 
     /**
-    * 不分页查询专题表
-    * @param topic
-    * @return
-    */
-    List<Topic> selectByCondition(Topic topic);
+     * 新增专题
+     * @param topic
+     * @return
+     */
+    boolean add(Topic topic);
 
     /**
-    * 添加专题表
-    * @param topic
-    * @return
-    */
-    boolean insert(Topic topic);
+     * 更新专题
+     * @param topic
+     * @return
+     */
+    boolean updateById(Topic topic);
 
     /**
-    * 根据id更新专题表
-    * @param topic
-    * @return
-    */
-    boolean updateByPrimaryKey(Topic topic);
-
-    /**
-    * 单个删除专题表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除专题表(也可单个删除专题表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 删除专题
+     * @param id 专题id
+     * @return
+     */
+    boolean removeById(Long id);
 }

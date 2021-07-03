@@ -25,43 +25,47 @@ import com.haitaotao.service.IGoodsAttributeService;
 public class GoodsAttributeServiceImpl implements IGoodsAttributeService {
 
     @Autowired
-    private GoodsAttributeMapper mapper;
+    private GoodsAttributeMapper goodsAttributeMapper;
 
     @Override
     public GoodsAttribute selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+        return goodsAttributeMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public PageInfo<GoodsAttribute> selectByPage(GoodsAttribute goodsAttribute, Integer pageNo, Integer pageSize){
         PageHelper.startPage(pageNo,pageSize);
-        List<GoodsAttribute> list = mapper.selectByCondition(goodsAttribute);
+        List<GoodsAttribute> list = goodsAttributeMapper.selectByCondition(goodsAttribute);
         return new PageInfo<>(list);
     }
 
     @Override
     public List<GoodsAttribute> selectByCondition(GoodsAttribute goodsAttribute){
-        return mapper.selectByCondition(goodsAttribute);
+        return goodsAttributeMapper.selectByCondition(goodsAttribute);
     }
 
     @Override
     public boolean insert(GoodsAttribute goodsAttribute){
-        return mapper.insertSelective(goodsAttribute);
+        return goodsAttributeMapper.insertSelective(goodsAttribute);
     }
 
     @Override
     public boolean updateByPrimaryKey(GoodsAttribute goodsAttribute){
-        return mapper.updateByPrimaryKey(goodsAttribute);
+        return goodsAttributeMapper.updateByPrimaryKey(goodsAttribute);
     }
 
     @Override
     public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
+        return goodsAttributeMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
+        return goodsAttributeMapper.batchDeleteByPrimaryKey(ids);
     }
 
+    @Override
+    public List<GoodsAttribute> listByGoodsId(Long goodsId) {
+        return goodsAttributeMapper.listByGoodsId(goodsId);
+    }
 }

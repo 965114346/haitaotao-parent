@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Issue;
 
@@ -14,53 +12,44 @@ import com.haitaotao.entity.Issue;
 public interface IIssueService {
 
     /**
-    * 根据id查询常见问题表
-    * @param id
-    * @return
-    */
-    Issue selectByPrimaryKey(Long id);
+     * 根据id查询常见问题表
+     *
+     * @param id
+     * @return
+     */
+    Issue selectById(Long id);
 
     /**
-    * 分页查询常见问题表
-    * @param issue
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Issue> selectByPage(Issue issue, Integer pageNo, Integer pageSize);
+     * 分页查询常见问题表
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param question 问题内容
+     * @return
+     */
+    PageInfo<Issue> pageList(Integer pageNum, Integer pageSize, String question);
 
     /**
-    * 不分页查询常见问题表
-    * @param issue
-    * @return
-    */
-    List<Issue> selectByCondition(Issue issue);
+     * 添加常见问题表
+     *
+     * @param issue
+     * @return
+     */
+    boolean add(Issue issue);
 
     /**
-    * 添加常见问题表
-    * @param issue
-    * @return
-    */
-    boolean insert(Issue issue);
+     * 根据id更新常见问题表
+     *
+     * @param issue
+     * @return
+     */
+    boolean updateById(Issue issue);
 
     /**
-    * 根据id更新常见问题表
-    * @param issue
-    * @return
-    */
-    boolean updateByPrimaryKey(Issue issue);
-
-    /**
-    * 单个删除常见问题表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除常见问题表(也可单个删除常见问题表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 单个删除常见问题表
+     *
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
 }

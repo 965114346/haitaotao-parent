@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.ConfigExpressMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.ConfigExpress" >
+		<id column="id" property="id" />
+		<result column="freight_min" property="freightMin" />
+		<result column="freight_value" property="freightValue" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `freight_min`, `freight_value`, `create_time`, `update_time`
+	</sql>
+
+	<select id="get" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_config_express
+		limit 1
+	</select>
+
+	<!-- 根据PrimaryKey更新运费配置表 -->
+	<update id="updateById" parameterType="com.haitaotao.entity.ConfigExpress" >
+		update haitaotao_config_express
+		<set >
+			<if test="freightMin != null" >
+				`freight_min` = #{freightMin},
+			</if>
+			<if test="freightValue != null" >
+				`freight_value` = #{freightValue},
+			</if>
+			`update_time` = now(),
+		</set>
+		<where>
+			`id` = #{id}
+		</where>
+	</update>
+</mapper>

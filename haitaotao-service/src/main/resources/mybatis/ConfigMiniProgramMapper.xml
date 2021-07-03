@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haitaotao.mapper.ConfigMiniProgramMapper" >
+
+	<resultMap id="BaseResultMap" type="com.haitaotao.entity.ConfigMiniProgram" >
+		<id column="id" property="id" />
+		<result column="count_goods_new" property="countGoodsNew" />
+		<result column="count_goods_hot" property="countGoodsHot" />
+		<result column="count_brand" property="countBrand" />
+		<result column="count_topic" property="countTopic" />
+		<result column="count_category" property="countCategory" />
+		<result column="count_category_goods" property="countCategoryGoods" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		`id`, `count_goods_new`, `count_goods_hot`, `count_brand`, `count_topic`, `count_category`, `count_category_goods`, `create_time`, `update_time`
+	</sql>
+
+    <select id="get" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_config_mini_program
+		limit 1
+	</select>
+
+	<update id="updateById" parameterType="com.haitaotao.entity.ConfigMiniProgram">
+		update haitaotao_config_mini_program
+		<set >
+			<if test="countGoodsNew != null" >
+				`count_goods_new` = #{countGoodsNew},
+			</if>
+			<if test="countGoodsHot != null" >
+				`count_goods_hot` = #{countGoodsHot},
+			</if>
+			<if test="countBrand != null" >
+				`count_brand` = #{countBrand},
+			</if>
+			<if test="countTopic != null" >
+				`count_topic` = #{countTopic},
+			</if>
+			<if test="countCategory != null" >
+				`count_category` = #{countCategory},
+			</if>
+			<if test="countCategoryGoods != null" >
+				`count_category_goods` = #{countCategoryGoods},
+			</if>
+			`update_time` = now(),
+		</set>
+		<where>
+			`id` = #{id}
+		</where>
+	</update>
+</mapper>

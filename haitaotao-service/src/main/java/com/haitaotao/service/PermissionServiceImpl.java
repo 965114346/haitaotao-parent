@@ -1,9 +1,12 @@
 package com.haitaotao.service;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.haitaotao.entity.MapRolePermission;
+import com.haitaotao.mapper.MapRolePermissionMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +33,20 @@ public class PermissionServiceImpl implements IPermissionService {
     @Autowired
     private PermissionMapper permissionMapper;
 
+    @Autowired
+    private MapRolePermissionMapper mapRolePermissionMapper;
+
     @Override
-    public Set<String> listNameByRoleIds(List<Integer> roleIds) {
-        if (CollectionUtils.isEmpty(roleIds)) {
-            return new HashSet<>();
+    public List<Permission> listPermissionByRoleIdList(List<Long> roleIdList) {
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Collections.emptyList();
         }
 
-        return permissionMapper.listNameByRoleIds(roleIds);
+        List<Long> permissionIdList = mapRolePermissionMapper.listPermissionIdByRoleIdList(roleIdList);
+        if (CollectionUtils.isEmpty(permissionIdList)) {
+            return Collections.emptyList();
+        }
+
+        return permissionMapper.listPermissionByIdList(permissionIdList);
     }
 }

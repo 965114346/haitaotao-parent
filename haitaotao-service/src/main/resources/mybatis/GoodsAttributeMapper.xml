@@ -56,7 +56,17 @@
 		</where>
 	</select>
 
-	<!-- 插入商品参数表 -->
+    <select id="listByGoodsId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_goods_attribute
+		<where>
+			`deleted` = 0
+			and `goods_id` = #{goodsId}
+		</where>
+	</select>
+
+    <!-- 插入商品参数表 -->
 	<insert id="insertSelective" parameterType="com.haitaotao.entity.GoodsAttribute" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()

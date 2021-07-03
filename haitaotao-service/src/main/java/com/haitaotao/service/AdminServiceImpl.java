@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.haitaotao.mapper.AdminMapper;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,40 +30,32 @@ public class AdminServiceImpl implements IAdminService {
     }
 
     @Override
-    public Admin selectByPrimaryKey(Long id) {
-        return adminMapper.selectByPrimaryKey(id);
+    public Admin getById(Long id) {
+        return adminMapper.getById(id);
     }
 
     @Override
-    public PageInfo<Admin> selectByPage(Admin admin, Integer pageNo, Integer pageSize){
-        PageHelper.startPage(pageNo,pageSize);
-        List<Admin> list = adminMapper.selectByCondition(admin);
-        return new PageInfo<>(list);
+    public PageInfo<Admin> pageList(Integer pageNum, Integer pageSize, String username) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> adminMapper.listByCondition(username));
     }
 
     @Override
-    public List<Admin> selectByCondition(Admin admin){
-        return adminMapper.selectByCondition(admin);
+    public boolean add(Admin admin) {
+        return adminMapper.insert(admin);
     }
 
     @Override
-    public boolean insert(Admin admin){
-        return adminMapper.insertSelective(admin);
+    public boolean updateById(Admin admin) {
+        return adminMapper.updateById(admin);
     }
 
     @Override
-    public boolean updateByPrimaryKey(Admin admin){
-        return adminMapper.updateByPrimaryKey(admin);
+    public boolean updateLoginInfo(Long id, String ip) {
+        return adminMapper.updateLoginInfo(id, ip);
     }
 
     @Override
-    public boolean deleteByPrimaryKey(Long id) {
-        return adminMapper.deleteByPrimaryKey(id);
+    public boolean removeById(Long id) {
+        return adminMapper.removeById(id);
     }
-
-    @Override
-    public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return adminMapper.batchDeleteByPrimaryKey(ids);
-    }
-
 }

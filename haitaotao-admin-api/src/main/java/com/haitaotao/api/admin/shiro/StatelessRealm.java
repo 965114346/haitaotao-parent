@@ -1,8 +1,9 @@
 package com.haitaotao.api.admin.shiro;
 
-import com.alibaba.fastjson.JSONObject;
 import com.haitaotao.common.util.JwtUtil;
 import com.haitaotao.entity.Admin;
+import com.haitaotao.entity.Permission;
+import com.haitaotao.entity.Role;
 import com.haitaotao.service.IPermissionService;
 import com.haitaotao.service.IRoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 无状态Realm
@@ -47,12 +49,17 @@ public class StatelessRealm extends AuthorizingRealm {
         }
 
         Admin admin = (Admin) getAvailablePrincipal(principals);
-        List<Integer> roleIds = JSONObject.parseArray(admin.getRoleIds(), Integer.class);
-        Set<String> roles = roleService.listNameByIds(roleIds);
-        Set<String> permissions = permissionService.listNameByRoleIds(roleIds);
+        List<Role> roleList = roleService.listRoleByAdminId(admin.getId());
+
+        Set<String> roleNames = roleList.stream().map(Role::getName).collect(Collectors.toSet());
+        List<Long> roleIdList = roleList.stream().map(Role::getId).collect(Collectors.toList());
+        List<Permission> permissionList = permissionService.listPermissionByRoleIdList(roleIdList);
+
+        Set<String> permissionNames = permissionList.stream().map(Permission::getPermission).collect(Collectors.toSet());
+
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(roles);
-        info.setStringPermissions(permissions);
+        info.setRoles(roleNames);
+        info.setStringPermissions(permissionNames);
         return info;
     }
 

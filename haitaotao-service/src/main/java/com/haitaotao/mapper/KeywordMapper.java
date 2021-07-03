@@ -1,6 +1,7 @@
 package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Keyword;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,44 +14,43 @@ import java.util.List;
 public interface KeywordMapper {
 
     /**
-    * 根据id查询关键字表
-    * @param id
-    * @return
-    */
-    Keyword selectByPrimaryKey(Long id);
+     * 根据id查询关键字表
+     *
+     * @param id
+     * @return
+     */
+    Keyword selectById(Long id);
 
     /**
-    * 条件查询关键字表列表
-    * @param keyword
-    * @return
-    */
-    List<Keyword> selectByCondition(Keyword keyword);
+     * 条件查询关键字表列表
+     *
+     * @param keyword 关键字
+     * @param url     跳转链接
+     * @return
+     */
+    List<Keyword> listByCondition(@Param("keyword") String keyword, @Param("url") String url);
 
     /**
-    * 插入关键字表
-    * @param keyword
-    * @return
-    */
-    boolean insertSelective(Keyword keyword);
+     * 插入关键字表
+     *
+     * @param keyword
+     * @return
+     */
+    boolean insert(Keyword keyword);
 
     /**
-    * 更新关键字表
-    * @param keyword
-    * @return
-    */
-    boolean updateByPrimaryKey(Keyword keyword);
+     * 更新关键字表
+     *
+     * @param keyword
+     * @return
+     */
+    boolean updateById(Keyword keyword);
 
     /**
-    * 根据id删除关键字表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 根据id批量删除关键字表
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 根据id删除关键字表
+     *
+     * @param id
+     * @return
+     */
+    boolean removeById(Long id);
 }

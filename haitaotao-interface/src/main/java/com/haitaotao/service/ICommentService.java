@@ -1,7 +1,5 @@
 package com.haitaotao.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.haitaotao.entity.Comment;
 
@@ -14,53 +12,32 @@ import com.haitaotao.entity.Comment;
 public interface ICommentService {
 
     /**
-    * 根据id查询评论表
-    * @param id
-    * @return
-    */
-    Comment selectByPrimaryKey(Long id);
+     * 分页查询评论
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @param userId   用户id
+     * @param type     评论类型
+     * @param valueId  如果type=0，则是商品评论；如果是type=1，则是专题评论。
+     * @return
+     */
+    PageInfo<Comment> pageList(Integer pageNum, Integer pageSize, Long userId, Integer type, Long valueId);
 
     /**
-    * 分页查询评论表
-    * @param comment
-    * @param pageNo
-    * @param pageSize
-    * @return
-    */
-    PageInfo<Comment> selectByPage(Comment comment, Integer pageNo, Integer pageSize);
+     * 添加评论
+     *
+     * @param comment
+     * @return
+     */
+    boolean add(Comment comment);
+
+    boolean updateById(Comment comment);
 
     /**
-    * 不分页查询评论表
-    * @param comment
-    * @return
-    */
-    List<Comment> selectByCondition(Comment comment);
-
-    /**
-    * 添加评论表
-    * @param comment
-    * @return
-    */
-    boolean insert(Comment comment);
-
-    /**
-    * 根据id更新评论表
-    * @param comment
-    * @return
-    */
-    boolean updateByPrimaryKey(Comment comment);
-
-    /**
-    * 单个删除评论表
-    * @param id
-    * @return
-    */
-    boolean deleteByPrimaryKey(Long id);
-
-    /**
-    * 批量删除评论表(也可单个删除评论表)
-    * @param ids
-    * @return
-    */
-    boolean batchDeleteByPrimaryKey(List<Long> ids);
+     * 单个删除评论
+     *
+     * @param id 评论id
+     * @return
+     */
+    boolean removeById(Long id);
 }

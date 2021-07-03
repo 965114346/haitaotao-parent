@@ -28,13 +28,24 @@ public class CategoryServiceImpl implements ICategoryService {
     private CategoryMapper categoryMapper;
 
     @Override
-    public List<Category> listByParentId(Long parentId) {
-        return categoryMapper.listByParentId(parentId);
+    public List<Category> listAll() {
+        List<Category> list = categoryMapper.listByParentId(0L);
+        for (Category category : list) {
+            treeList(category);
+        }
+        return list;
     }
 
     @Override
-    public List<Category> listL1() {
-        return categoryMapper.listByLevel("L1");
+    public Category getById(Long id) {
+        return categoryMapper.getById(id);
+    }
+
+    @Override
+    public PageInfo<Category> listByParentId(Integer pageNum, Integer pageSize, Long parentId) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Category> list = categoryMapper.listByParentId(parentId);
+        return PageInfo.of(list);
     }
 
     @Override
@@ -50,5 +61,18 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public boolean removeById(Long id) {
         return categoryMapper.removeById(id);
+    }
+
+    private void treeList(Category category) {
+        if (!category.isHasChildren()) {
+            return;
+        }
+
+        List<Category> children = categoryMapper.listByParentId(category.getId());
+        category.setChildren(children);
+
+        for (Category child : children) {
+            treeList(child);
+        }
     }
 }

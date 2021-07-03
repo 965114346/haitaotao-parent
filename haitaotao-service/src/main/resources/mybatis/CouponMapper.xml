@@ -30,44 +30,24 @@
 	</sql>
 
 	<!-- 根据PrimaryKey查询优惠券信息及规则表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_coupon
 		<where>
-			id = #{id}
+			`id` = #{id} and `deleted` = 0
 		</where>
 	</select>
 
 	<!-- 条件查询优惠券信息及规则表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Coupon" >
+	<select id="listByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Coupon" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_coupon
 		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
+			and `deleted` = 0
 			<if test="name != null and name != ''" >
 				and `name` = #{name}
-			</if>
-			<if test="desc != null and desc != ''" >
-				and `desc` = #{desc}
-			</if>
-			<if test="tag != null and tag != ''" >
-				and `tag` = #{tag}
-			</if>
-			<if test="total != null" >
-				and `total` = #{total}
-			</if>
-			<if test="discount != null" >
-				and `discount` = #{discount}
-			</if>
-			<if test="min != null" >
-				and `min` = #{min}
-			</if>
-			<if test="limit != null" >
-				and `limit` = #{limit}
 			</if>
 			<if test="type != null" >
 				and `type` = #{type}
@@ -75,41 +55,12 @@
 			<if test="status != null" >
 				and `status` = #{status}
 			</if>
-			<if test="goodsType != null" >
-				and `goods_type` = #{goodsType}
-			</if>
-			<if test="goodsValue != null and goodsValue != ''" >
-				and `goods_value` = #{goodsValue}
-			</if>
-			<if test="code != null and code != ''" >
-				and `code` = #{code}
-			</if>
-			<if test="timeType != null" >
-				and `time_type` = #{timeType}
-			</if>
-			<if test="days != null" >
-				and `days` = #{days}
-			</if>
-			<if test="startTime != null" >
-				and `start_time` = #{startTime}
-			</if>
-			<if test="endTime != null" >
-				and `end_time` = #{endTime}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
-			</if>
 		</where>
+		order by `create_time` desc
 	</select>
 
 	<!-- 插入优惠券信息及规则表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Coupon" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Coupon" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -163,15 +114,8 @@
 			<if test="endTime != null" >
                 `end_time`,
             </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="name != null" >
@@ -222,20 +166,13 @@
 			<if test="endTime != null" >
 				#{endTime},
 			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新优惠券信息及规则表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Coupon" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Coupon" >
 		update haitaotao_coupon
 		<set >
 			<if test="name != null and name != ''" >
@@ -286,34 +223,16 @@
 			<if test="endTime != null" >
 				`end_time` = #{endTime},
 			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			id = #{id} and `deleted` = 0
 		</where>
 	</update>
 
 	<!-- 根据PrimaryKey删除优惠券信息及规则表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_coupon where id = #{id}
-	</update>
-
-	<!-- 根据PrimaryKey批量删除优惠券信息及规则表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_coupon where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_coupon set `deleted` = 1 where id = #{id} and `deleted` = 0
 	</update>
 
 </mapper>

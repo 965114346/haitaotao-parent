@@ -31,17 +31,18 @@
 		<result column="confirm_time" property="confirmTime" />
 		<result column="comments" property="comments" />
 		<result column="end_time" property="endTime" />
+		<result column="version" property="version" />
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
 		<result column="deleted" property="deleted" />
 	</resultMap>
 
 	<sql id="Base_Column_List" >
-		`id`, `user_id`, `order_no`, `order_status`, `after_sale_status`, `consignee`, `mobile`, `address`, `message`, `goods_price`, `freight_price`, `coupon_price`, `integral_price`, `groupon_price`, `order_price`, `actual_price`, `pay_id`, `pay_time`, `ship_no`, `ship_channel`, `ship_time`, `refund_amount`, `refund_type`, `refund_content`, `refund_time`, `confirm_time`, `comments`, `end_time`, `create_time`, `update_time`, `deleted`
+		`id`, `user_id`, `order_no`, `order_status`, `after_sale_status`, `consignee`, `mobile`, `address`, `message`, `goods_price`, `freight_price`, `coupon_price`, `integral_price`, `groupon_price`, `order_price`, `actual_price`, `pay_id`, `pay_time`, `ship_no`, `ship_channel`, `ship_time`, `refund_amount`, `refund_type`, `refund_content`, `refund_time`, `confirm_time`, `comments`, `end_time`, `version`, `create_time`, `update_time`, `deleted`
 	</sql>
 
-    <select id="count" resultType="java.lang.Long">
-		select count(*) from haitaotao_order where deleted = 0
+	<select id="count" resultType="java.lang.Long">
+		select count(*) from haitaotao_order where `deleted` = 0
 	</select>
 
 	<select id="listByCondition" resultMap="BaseResultMap">
@@ -77,4 +78,25 @@
 		</where>
 	</select>
 
+	<select id="getByOrderNo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from haitaotao_order
+		<where>
+			and `deleted` = 0
+			and `order_no` = #{orderNo}
+		</where>
+	</select>
+
+	<update id="updateStatusByOrderNoAndVersion">
+		update haitaotao_order
+		set
+		`order_status` = #{orderStatus},
+		`update_time` = now(),
+		`version` = `version` + 1
+		where
+		`deleted` = 0
+		and `order_no` = #{orderNo}
+		and `version` = #{version}
+	</update>
 </mapper>

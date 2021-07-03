@@ -9,75 +9,54 @@
 		<result column="last_login_ip" property="lastLoginIp" />
 		<result column="last_login_time" property="lastLoginTime" />
 		<result column="avatar" property="avatar" />
-		<result column="role_ids" property="roleIds" />
 		<result column="create_time" property="createTime" />
 		<result column="update_time" property="updateTime" />
 		<result column="deleted" property="deleted" />
 	</resultMap>
 
 	<sql id="Base_Column_List" >
-		`id`, `username`, `password`, `last_login_ip`, `last_login_time`, `avatar`, `role_ids`, `create_time`, `update_time`, `deleted`
+		`id`, `username`, `password`, `last_login_ip`, `last_login_time`, `avatar`, `create_time`, `update_time`, `deleted`
 	</sql>
 
 	<!-- 根据PrimaryKey查询管理员表 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
 		select
 		<include refid="Base_Column_List" />
 		from haitaotao_admin
 		<where>
-			id = #{id}
+			`deleted` = 0
+			and `id` = #{id}
 		</where>
+		limit 1
 	</select>
 
-	<!-- 条件查询管理员表 -->
-	<select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.haitaotao.entity.Admin" >
-		select
-		<include refid="Base_Column_List" />
-		from haitaotao_admin
-		<where>
-			<if test="id != null" >
-				and `id` = #{id}
-			</if>
-			<if test="username != null and username != ''" >
-				and `username` = #{username}
-			</if>
-			<if test="password != null and password != ''" >
-				and `password` = #{password}
-			</if>
-			<if test="lastLoginIp != null and lastLoginIp != ''" >
-				and `last_login_ip` = #{lastLoginIp}
-			</if>
-			<if test="lastLoginTime != null" >
-				and `last_login_time` = #{lastLoginTime}
-			</if>
-			<if test="avatar != null and avatar != ''" >
-				and `avatar` = #{avatar}
-			</if>
-			<if test="roleIds != null and roleIds != ''" >
-				and `role_ids` = #{roleIds}
-			</if>
-			<if test="createTime != null" >
-				and `create_time` = #{createTime}
-			</if>
-			<if test="updateTime != null" >
-				and `update_time` = #{updateTime}
-			</if>
-			<if test="deleted != null" >
-				and `deleted` = #{deleted}
-			</if>
-		</where>
-	</select>
-
-    <select id="getByUsername" resultMap="BaseResultMap">
+	<select id="getByUsername" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from haitaotao_admin
-		where username = #{username}
-		and deleted = 0 limit 1
+		<where>
+			`deleted` = 0
+			and username = #{username}
+		</where>
+		limit 1
+	</select>
+
+	<!-- 条件查询管理员表 -->
+	<select id="listByCondition" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from haitaotao_admin
+		<where>
+			and `deleted` = 0
+			<if test="username != null and username != ''" >
+				and `username` like concat('%', #{username}, '%')
+			</if>
+		</where>
+		order by `create_time` desc
 	</select>
 
     <!-- 插入管理员表 -->
-	<insert id="insertSelective" parameterType="com.haitaotao.entity.Admin" >
+	<insert id="insert" parameterType="com.haitaotao.entity.Admin" >
 		<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -98,18 +77,8 @@
 			<if test="avatar != null" >
                 `avatar`,
             </if>
-			<if test="roleIds != null" >
-                `role_ids`,
-            </if>
-			<if test="createTime != null" >
-                `create_time`,
-            </if>
-			<if test="updateTime != null" >
-                `update_time`,
-            </if>
-			<if test="deleted != null" >
-                `deleted`,
-            </if>
+			`create_time`,
+			`update_time`,
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="username != null" >
@@ -127,23 +96,13 @@
 			<if test="avatar != null" >
 				#{avatar},
 			</if>
-			<if test="roleIds != null" >
-				#{roleIds},
-			</if>
-			<if test="createTime != null" >
-				#{createTime},
-			</if>
-			<if test="updateTime != null" >
-				#{updateTime},
-			</if>
-			<if test="deleted != null" >
-				#{deleted},
-			</if>
+			now(),
+			now(),
 		</trim>
 	</insert>
 
 	<!-- 根据PrimaryKey更新管理员表 -->
-	<update id="updateByPrimaryKey" parameterType="com.haitaotao.entity.Admin" >
+	<update id="updateById" parameterType="com.haitaotao.entity.Admin" >
 		update haitaotao_admin
 		<set >
 			<if test="username != null and username != ''" >
@@ -161,37 +120,21 @@
 			<if test="avatar != null and avatar != ''" >
 				`avatar` = #{avatar},
 			</if>
-			<if test="roleIds != null and roleIds != ''" >
-				`role_ids` = #{roleIds},
-			</if>
-			<if test="createTime != null" >
-				`create_time` = #{createTime},
-			</if>
-			<if test="updateTime != null" >
-				`update_time` = #{updateTime},
-			</if>
-			<if test="deleted != null" >
-				`deleted` = #{deleted},
-			</if>
+			`update_time` = now(),
 		</set>
 		<where>
-			id = #{id}
+			`deleted` = 0
+			and `id` = #{id}
 		</where>
 	</update>
 
-	<!-- 根据PrimaryKey删除管理员表 -->
-	<update id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from haitaotao_admin where id = #{id}
+	<update id="updateLoginInfo">
+		update haitaotao_admin set `last_login_ip` = #{ip}, `last_login_time` = now() where `deleted` = 0 and `id` = #{id}
 	</update>
 
-	<!-- 根据PrimaryKey批量删除管理员表 -->
-	<update id="batchDeleteByPrimaryKey" parameterType="java.lang.Long">
-        <if test="null != list and list.size > 0">
-            delete from haitaotao_admin where id in
-            <foreach item="id" collection="list" open="(" separator="," close=")">
-            #{id}
-            </foreach>
-        </if>
+	<!-- 根据PrimaryKey删除管理员表 -->
+	<update id="removeById" parameterType="java.lang.Long">
+        update haitaotao_admin set `deleted` = 1 where `deleted` = 0 and `id` = #{id}
 	</update>
 
 </mapper>

@@ -25,43 +25,47 @@ import com.haitaotao.service.IGoodsSpecificationService;
 public class GoodsSpecificationServiceImpl implements IGoodsSpecificationService {
 
     @Autowired
-    private GoodsSpecificationMapper mapper;
+    private GoodsSpecificationMapper goodsSpecificationMapper;
 
     @Override
     public GoodsSpecification selectByPrimaryKey(Long id) {
-        return mapper.selectByPrimaryKey(id);
+        return goodsSpecificationMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public PageInfo<GoodsSpecification> selectByPage(GoodsSpecification goodsSpecification, Integer pageNo, Integer pageSize){
         PageHelper.startPage(pageNo,pageSize);
-        List<GoodsSpecification> list = mapper.selectByCondition(goodsSpecification);
+        List<GoodsSpecification> list = goodsSpecificationMapper.selectByCondition(goodsSpecification);
         return new PageInfo<>(list);
     }
 
     @Override
     public List<GoodsSpecification> selectByCondition(GoodsSpecification goodsSpecification){
-        return mapper.selectByCondition(goodsSpecification);
+        return goodsSpecificationMapper.selectByCondition(goodsSpecification);
     }
 
     @Override
     public boolean insert(GoodsSpecification goodsSpecification){
-        return mapper.insertSelective(goodsSpecification);
+        return goodsSpecificationMapper.insertSelective(goodsSpecification);
     }
 
     @Override
     public boolean updateByPrimaryKey(GoodsSpecification goodsSpecification){
-        return mapper.updateByPrimaryKey(goodsSpecification);
+        return goodsSpecificationMapper.updateByPrimaryKey(goodsSpecification);
     }
 
     @Override
     public boolean deleteByPrimaryKey(Long id) {
-        return mapper.deleteByPrimaryKey(id);
+        return goodsSpecificationMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public boolean batchDeleteByPrimaryKey(List<Long> ids) {
-        return mapper.batchDeleteByPrimaryKey(ids);
+        return goodsSpecificationMapper.batchDeleteByPrimaryKey(ids);
     }
 
+    @Override
+    public List<GoodsSpecification> listByGoodsId(Long goodsId) {
+        return goodsSpecificationMapper.listByGoodsId(goodsId);
+    }
 }

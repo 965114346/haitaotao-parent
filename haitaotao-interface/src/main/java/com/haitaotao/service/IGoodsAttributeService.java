@@ -63,4 +63,11 @@ public interface IGoodsAttributeService {
     * @return
     */
     boolean batchDeleteByPrimaryKey(List<Long> ids);
+
+    /**
+     * 商品参数列表
+     * @param goodsId 商品id
+     * @return
+     */
+    List<GoodsAttribute> listByGoodsId(Long goodsId);
 }
