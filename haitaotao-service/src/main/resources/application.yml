@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  application:
+    name: haitaotao-service
+
+dubbo:
+  protocol:
+    port: 20880
+
+mybatis:
+  mapper-locations: classpath:mybatis/*.xml
+
+server:
+  port: 8082
+logging:
+  level:
+    root: info
+    com.haitaotao: debug

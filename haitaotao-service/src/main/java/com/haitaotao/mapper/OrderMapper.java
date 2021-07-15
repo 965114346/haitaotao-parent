@@ -2,6 +2,7 @@ package com.haitaotao.mapper;
 
 import com.haitaotao.entity.Order;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author yangyang
  * @date 2021-1-5 17:14:28
  */
+@Repository
 public interface OrderMapper {
 
     /**

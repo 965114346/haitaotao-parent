@@ -9,7 +9,7 @@ dubbo:
     name: haitaotao-admin-api
     qos-enable: false
   registry:
-    address: nacos://localhost:8848
+    address: zookeeper://single-zookeeper:2181
   consumer:
     check: false
 
@@ -17,4 +17,4 @@ minio:
   bucketName: haitaotao
   accessKey: admin
   secretKey: admin123456
-  endpoint: http://localhost:9000
+  endpoint: http://minio:9000

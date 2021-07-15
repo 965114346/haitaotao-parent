@@ -91,6 +91,39 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>@</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>application-${spring.profiles.active}.yml</include>
+                                        <include>application.yml</include>
+                                        <include>META-INF/dubbo/*</include>
+                                        <include>**/*.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>

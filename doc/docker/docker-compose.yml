@@ -1,39 +1,56 @@
 version: '3'
 services:
-  redis:
-    image: redis
-    container_name: haitaotao_redis
+  single-zookeeper:
+    image: zookeeper:latest
+    container_name: single-zookeeper
     ports:
-    - 6379:6379
-  mysql57:
-    image: nacos/nacos-mysql:5.7
-    container_name: mysql57
-    ports:
-      - 3308:3306
+      - 2181:2181
+  mysql-57:
+    image: mysql:5.7
+    container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: nacos_config
-  nacos:
-    image: nacos/nacos-server:latest
-    container_name: nacos-standalone-mysql
-    environment:
-      #如果支持主机名可以使用hostname,否则使用ip，默认也是ip
-      PREFER_HOST_MODE: hostname
-      MODE: standalone
-      #数据源平台 仅支持mysql或不保存empty
-      SPRING_DATASOURCE_PLATFORM: mysql
-      MYSQL_SERVICE_HOST: mysql57
-      MYSQL_SERVICE_PORT: 3306
-      MYSQL_SERVICE_DB_NAME: nacos_config
-      MYSQL_SERVICE_USER: root
-      MYSQL_SERVICE_PASSWORD: root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=haitaotao
+      - TZ=Asia/Shanghai
     ports:
-      - 8848:8848
-      - 9555:9555
+    - 3308:3306
+  haitaotao-service:
+    image: haitaotao-service:latest
+    container_name: haitaotao-service
+    ports:
+      - 20880:20880
     depends_on:
-      - mysql57
+      - single-zookeeper
+      - mysql-57
+  haitaotao-admin-api:
+    image: haitaotao-admin-api:latest
+    container_name: haitaotao-admin-api
+    ports:
+    - 8083:8083
+  dubbo-admin:
+    image: chenchuxin/dubbo-admin:latest
+    container_name: dubbo-admin
+    environment:
+      - dubbo.registry.address=zookeeper://single-zookeeper:2181
+      - dubbo.admin.root.password=root
+      - dubbo.admin.guest.password=guest
+    ports:
+      - 8080:8080
+    depends_on:
+      - single-zookeeper
+#  apache-dubbo-admin:
+#    image: apache/dubbo-admin:latest
+#    container_name: apache-dubbo-admin
+#    depends_on:
+#      - single-zookeeper
+#    environment:
+#      - admin.registry.address=zookeeper://single-zookeeper:2181
+#      - admin.config-center=zookeeper://single-zookeeper:2181
+#      - admin.metadata-report.address=zookeeper://single-zookeeper:2181
+#    ports:
+#      - 8078:8080
   minio:
-    image: minio/minio
+    image: minio/minio:latest
     container_name: minio
     environment:
       MINIO_ACCESS_KEY: admin
@@ -41,17 +58,8 @@ services:
     ports:
       - 9000:9000
     command: server /data
-#  prometheus:
-#    container_name: prometheus
-#    image: prom/prometheus:latest
-#    ports:
-#      - "9090:9090"
-#    depends_on:
-#      - nacos
-#    restart: on-failure
-#  grafana:
-#    container_name: grafana
-#    image: grafana/grafana:latest
-#    ports:
-#      - 3000:3000
-#    restart: on-failure
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379

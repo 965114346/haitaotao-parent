@@ -2,6 +2,7 @@ package com.haitaotao.service;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
+@DubboService
 public class SystemConfigServiceImpl implements SystemConfigService, ApplicationContextAware {
 
     @Autowired

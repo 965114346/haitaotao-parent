@@ -1,6 +1,7 @@
 package com.haitaotao.common.filter;
 
-import com.alibaba.nacos.common.utils.UuidUtils;
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.common.constants.CommonConstants;
@@ -21,10 +22,30 @@ public class GlobalTraceFilter implements Filter {
         String traceId = invocation.getAttachment("traceId");
 
         // 第一次发起调用
-        traceId = StringUtils.isBlank(traceId) ? UuidUtils.generateUuid() : traceId;
+        traceId = StringUtils.isBlank(traceId) ? IdUtil.randomUUID() : traceId;
 
         log.info("traceId: {}", traceId);
         context.setAttachment("traceId", traceId);
-        return invoker.invoke(invocation);
+
+        // 日志记录
+        String name = invoker.getInterface().getName();
+        Object[] args = invocation.getArguments();
+        String method = invocation.getMethodName();
+
+        log.info("==> 接口名称: {}", name);
+        log.info("==> 方法名称: {}", method);
+        log.info("==> 参数: {}", args);
+
+        long now = System.currentTimeMillis();
+        Result result = invoker.invoke(invocation);
+
+        // 有异常，记录异常信息
+        if (result.hasException()) {
+            Throwable e = result.getException();
+            log.error("<== dubbo 调用异常 {}", e.getMessage());
+        }
+
+        log.info("<== 耗时 {} ms", System.currentTimeMillis() - now);
+        return result;
     }
 }

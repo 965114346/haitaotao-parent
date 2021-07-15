@@ -9,7 +9,7 @@ dubbo:
     name: haitaotao-admin-api
     qos-enable: false
   registry:
-    address: nacos://localhost:8848
+    address: zookeeper://localhost:2181
   consumer:
     check: false
 

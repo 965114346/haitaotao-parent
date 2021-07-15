@@ -1,12 +1,12 @@
 spring:
+  profiles:
+    active: prod
   application:
     name: haitaotao-admin-api
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB
-  profiles:
-    active: dev
   mvc:
     servlet:
       load-on-startup: 1

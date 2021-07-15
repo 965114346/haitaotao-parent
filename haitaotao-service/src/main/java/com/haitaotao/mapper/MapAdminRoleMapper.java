@@ -1,11 +1,14 @@
 package com.haitaotao.mapper;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
  * @author yangyang
  * @date 2021/5/13 14:47
  */
+@Repository
 public interface MapAdminRoleMapper {
 
     /**
